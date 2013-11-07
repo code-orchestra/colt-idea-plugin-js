@@ -1,0 +1,2 @@
+colt-idea-plugin-js
+===================
