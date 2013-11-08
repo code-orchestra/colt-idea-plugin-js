@@ -7,22 +7,26 @@
 
     <description><![CDATA[ COLT live coding tool integration plugin ]]></description>
 
-  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="107.105"/>
+    <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="107.105"/>
 
-  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <application-components>
+        <component><implementation-class>codeOrchestra.colt.core.plugin.ColtSettings</implementation-class></component>
+    </application-components>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
-
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <project-components>
+        <component>
+            <interface-class>codeOrchestra.colt.core.rpc.discovery.ColtServiceLocator</interface-class>
+            <implementation-class>codeOrchestra.colt.core.rpc.discovery.FileBasedColtServiceLocator</implementation-class>
+        </component>
+        <component>
+            <implementation-class>codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider</implementation-class>
+        </component>
+        <component>
+            <interface-class>codeOrchestra.colt.core.ColtFacade</interface-class>
+            <implementation-class>codeOrchestra.colt.js.ColtJsFacade</implementation-class>
+        </component>
+    </project-components>
 
   <actions>
     <!-- Add your actions here -->
