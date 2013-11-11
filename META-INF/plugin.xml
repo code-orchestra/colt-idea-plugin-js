@@ -5,10 +5,10 @@
     <version>1.0</version>
     <vendor email="support@codeorchestra.com" url="http://codeorchestra.com/">CodeOrchestra</vendor>
 
+	<depends>com.intellij.modules.lang</depends>
+    <depends>JavaScript</depends>
+	
     <description><![CDATA[ COLT live coding tool integration plugin ]]></description>
-
-    <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="107.105"/>
 
     <application-components>
         <component><implementation-class>codeOrchestra.colt.core.plugin.ColtSettings</implementation-class></component>
