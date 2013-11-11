@@ -32,7 +32,8 @@
     <!-- Add your actions here -->
   </actions>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="codeOrchestra.colt.js.plugin.run.JsColtConfigurationType"/>
+    </extensions>
+
 </idea-plugin>
