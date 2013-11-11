@@ -24,7 +24,7 @@ public class JsColtConfigurationFactory extends ConfigurationFactory {
 
     @Override
     public String getName() {
-        return "COLT ActionScript";
+        return "COLT JavaScript";
     }
 
     public void configureBeforeRunTaskDefaults(Key<? extends BeforeRunTask> providerID, BeforeRunTask task) {
