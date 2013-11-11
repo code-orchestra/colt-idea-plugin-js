@@ -1,5 +1,6 @@
 package codeOrchestra.colt.js.plugin.run;
 
+import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
@@ -57,14 +58,13 @@ public class JsColtConfigurable extends SettingsEditor<JsColtRunConfiguration> {
         exportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // TODO: implement
-
-                /*
                 String exportPath = JsColtPluginController.export(project);
+
+                // TODO: ask for main document!
+
                 if (exportPath != null) {
                     coltProjectPathChooser.setText(exportPath);
                 }
-                */
             }
         });
         coltProjectPathPane.add(exportButton, BorderLayout.AFTER_LINE_ENDS);

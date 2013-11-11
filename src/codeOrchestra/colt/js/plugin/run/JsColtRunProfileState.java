@@ -1,6 +1,7 @@
 package codeOrchestra.colt.js.plugin.run;
 
 import codeOrchestra.colt.core.plugin.run.ColtRemoteProcessHandler;
+import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import com.intellij.execution.DefaultExecutionResult;
 import com.intellij.execution.ExecutionException;
@@ -39,8 +40,7 @@ public class JsColtRunProfileState implements RunProfileState {
             throw new ExecutionException("Can't establish connection with COLT");
         }
 
-        // TODO: implement
-        // JsColtPluginController.runCompilationAction(service, project, JsColtPluginController.BASE_LIVE, null);
+        JsColtPluginController.runLive(service, project);
         return new DefaultExecutionResult(consoleView, process);
     }
 
