@@ -40,7 +40,7 @@ public class JsColtRunProfileState implements RunProfileState {
             throw new ExecutionException("Can't establish connection with COLT");
         }
 
-        JsColtPluginController.runLive(service, project);
+        JsColtPluginController.runLive(service, project, null);
         return new DefaultExecutionResult(consoleView, process);
     }
 
