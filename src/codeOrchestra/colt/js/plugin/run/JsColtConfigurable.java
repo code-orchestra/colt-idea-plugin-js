@@ -1,6 +1,9 @@
 package codeOrchestra.colt.js.plugin.run;
 
 import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
+import com.intellij.ide.util.TreeClassChooserFactory;
+import com.intellij.ide.util.TreeFileChooser;
+import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
@@ -9,6 +12,7 @@ import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -58,10 +62,13 @@ public class JsColtConfigurable extends SettingsEditor<JsColtRunConfiguration> {
         exportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String exportPath = JsColtPluginController.export(project);
+                FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true, false, false, false, false, false);
+                VirtualFile documentFile = FileChooser.chooseFile(fileChooserDescriptor, project, project.getBaseDir());
+                if (documentFile == null) {
+                    return;
+                }
 
-                // TODO: ask for main document!
-
+                String exportPath = JsColtPluginController.export(project, documentFile.getPath());
                 if (exportPath != null) {
                     coltProjectPathChooser.setText(exportPath);
                 }
