@@ -34,6 +34,12 @@
           <action  id="colt.run.live" class="codeOrchestra.colt.js.plugin.actions.JsColtRunLiveAction" text="Start Live Session" />
           <action  id="colt.run.production" class="codeOrchestra.colt.js.plugin.actions.JsColtRunProductionAction" text="Run Production Build" />
       </group>
+
+      <group id="COLT.Run.Actions" text="Run With COLT">
+          <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="last"/>
+          <separator />
+          <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtAction" />
+      </group>
   </actions>
 
     <extensions defaultExtensionNs="com.intellij">
