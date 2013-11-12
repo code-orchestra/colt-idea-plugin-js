@@ -8,7 +8,6 @@ import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import codeOrchestra.colt.js.rpc.model.ColtJsRemoteProject;
 import codeOrchestra.colt.js.rpc.model.codec.ColtJsRemoteProjectEncoder;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
@@ -30,6 +29,20 @@ public final class JsColtPluginController {
 
     private JsColtPluginController() {
     }
+
+    private static final RemoteAction PRODUCTION_RUN_ACTION = new RemoteAction() {
+        @Override
+        public void run(ColtJsRemoteService service) throws ColtRemoteTransferableException {
+            service.startProduction(ColtSettings.getInstance().getSecurityToken());
+        }
+    };
+
+    private static final RemoteAction LIVE_RUN_ACTION = new RemoteAction() {
+        @Override
+        public void run(ColtJsRemoteService service) throws ColtRemoteTransferableException {
+            service.startLive(ColtSettings.getInstance().getSecurityToken());
+        }
+    };
 
     public static String export(Project project, String mainDocumentPath) {
         return export(project, project.getName(), mainDocumentPath);
@@ -53,7 +66,15 @@ public final class JsColtPluginController {
         return coltProject.getPath();
     }
 
-    public static void runLive(final ColtJsRemoteService coltRemoteService, final Project ideaProject, final AnActionEvent actionEvent) {
+    public static void runLive(final ColtJsRemoteService coltRemoteService, final Project ideaProject) {
+        runRemoteAction(coltRemoteService, ideaProject, LIVE_RUN_ACTION);
+    }
+
+    public static void runProduction(final ColtJsRemoteService coltRemoteService, final Project ideaProject) {
+        runRemoteAction(coltRemoteService, ideaProject, PRODUCTION_RUN_ACTION);
+    }
+
+    private static void runRemoteAction(final ColtJsRemoteService coltRemoteService, final Project ideaProject, final RemoteAction remoteAction) {
         // Report errors and warnings
         final ColtRemoteServiceProvider remoteServiceProvider = ideaProject.getComponent(ColtRemoteServiceProvider.class);
 
@@ -63,7 +84,7 @@ public final class JsColtPluginController {
             }, 0, Messages.getWarningIcon());
 
             if (result == 0) {
-                runLive(coltRemoteService, ideaProject, actionEvent);
+                runLive(coltRemoteService, ideaProject);
             } else {
                 return;
             }
@@ -73,10 +94,10 @@ public final class JsColtPluginController {
             coltRemoteService.checkAuth(ColtSettings.getInstance().getSecurityToken());
         } catch (InvalidAuthTokenException e) {
             ColtSettings.getInstance().invalidate();
-            runLive(coltRemoteService, ideaProject, actionEvent);
+            runLive(coltRemoteService, ideaProject);
         }
 
-        new Task.Backgroundable(ideaProject, "COLT Build", false) {
+        new Task.Backgroundable(ideaProject, "COLT Run", false) {
             @Override
             public void run(@NotNull ProgressIndicator progressIndicator) {
                 try {
@@ -90,7 +111,7 @@ public final class JsColtPluginController {
                 StatusBarEx statusBar = (StatusBarEx) ideFrame.getStatusBar();
 
                 try {
-                    coltRemoteService.startLive(ColtSettings.getInstance().getSecurityToken());
+                    remoteAction.run(coltRemoteService);
                     statusBar.notifyProgressByBalloon(MessageType.INFO, "Launching in live mode is successful");
                 } catch (ColtRemoteTransferableException e) {
                     remoteServiceProvider.fireCompileMessageAvailable(new ColtMessage("Can't start Live Session with COLT: " + e.getMessage()));
@@ -98,5 +119,9 @@ public final class JsColtPluginController {
                 }
             }
         }.queue();
+    }
+
+    private static interface RemoteAction {
+        void run(ColtJsRemoteService service) throws ColtRemoteTransferableException;
     }
 }

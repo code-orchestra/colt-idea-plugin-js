@@ -9,14 +9,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 /**
  * @author Alexander Eliseyev
  */
-public class JsColtRunLiveAction extends AbstractColtRemoteAction<ColtJsRemoteService> {
+public class JsColtRunProductionAction extends AbstractColtRemoteAction<ColtJsRemoteService> {
 
-    public JsColtRunLiveAction() {
-        super("Start Live Session");
+    public JsColtRunProductionAction() {
+        super("Run Production Build");
     }
 
     @Override
     protected void doRemoteAction(AnActionEvent event, ColtJsRemoteService coltRemoteService) throws InvalidAuthTokenException {
-        JsColtPluginController.runLive(coltRemoteService, event.getProject());
+        JsColtPluginController.runProduction(coltRemoteService, event.getProject());
     }
 }
