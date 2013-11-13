@@ -36,7 +36,7 @@ public class JsRunWithColtAction extends AnAction {
 
         VirtualFile[] virtualFileArray = (VirtualFile[]) e.getDataContext().getData("virtualFileArray");
         if (virtualFileArray != null && virtualFileArray.length == 1 && !virtualFileArray[0].isDirectory() &&
-                (virtualFileArray[0].getPath().toLowerCase().endsWith(".as") || virtualFileArray[0].getPath().toLowerCase().endsWith(".mxml"))) {
+                (virtualFileArray[0].getPath().toLowerCase().endsWith(".htm") || virtualFileArray[0].getPath().toLowerCase().endsWith(".html"))) {
             e.getPresentation().setEnabled(true);
         } else {
             e.getPresentation().setEnabled(false);
