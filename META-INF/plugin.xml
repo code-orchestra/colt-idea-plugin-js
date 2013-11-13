@@ -1,6 +1,6 @@
 <idea-plugin version="2">
 
-    <id>com.codeOrchestra.colt.js.ideaPlugin</id>
+    <id>com.codeOrchestra.colt.js.webStormPlugin</id>
     <name>COLT Plugin</name>
     <version>1.0</version>
     <vendor email="support@codeorchestra.com" url="http://codeorchestra.com/">CodeOrchestra</vendor>
