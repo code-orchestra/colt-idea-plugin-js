@@ -42,7 +42,7 @@
       </group>
 
       <!-- TODO: delete after testing -->
-      <action id="editor.test" class="codeOrchestra.colt.as.plugin.actions.TestEditorAction" text="Test Context">
+      <action id="editor.test" class="codeOrchestra.colt.js.plugin.actions.TestContextAction" text="Test Context">
           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
       </action>
   </actions>
