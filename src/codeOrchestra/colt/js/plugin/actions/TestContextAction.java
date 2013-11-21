@@ -39,7 +39,8 @@ public class TestContextAction extends AbstractColtRemoteAction<ColtJsRemoteServ
                     ColtSettings.getInstance().getSecurityToken(),
                     filePath,
                     offset,
-                    currentState
+                    currentState,
+                    "PROPERTIES"
             );
 
             System.out.println(contextForPosition);
