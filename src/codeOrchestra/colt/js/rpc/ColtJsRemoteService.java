@@ -16,4 +16,6 @@ public interface ColtJsRemoteService extends ColtRemoteService {
 
     String getContextForPosition(String securityToken, String file, int position, String currentContent, String contextType) throws ColtRemoteTransferableException;
 
+    String[] getMethodParams(String securityToken, String file, String methodId) throws ColtRemoteTransferableException;
+
 }
