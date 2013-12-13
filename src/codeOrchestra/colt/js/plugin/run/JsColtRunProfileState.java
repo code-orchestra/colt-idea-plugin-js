@@ -7,7 +7,9 @@ import com.intellij.execution.DefaultExecutionResult;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionResult;
 import com.intellij.execution.Executor;
+import com.intellij.execution.configurations.ConfigurationPerRunnerSettings;
 import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.configurations.RunnerSettings;
 import com.intellij.execution.impl.ConsoleViewImpl;
 import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.openapi.project.Project;
@@ -40,6 +42,14 @@ public class JsColtRunProfileState implements RunProfileState {
 
         JsColtPluginController.runLive(service, project);
         return new DefaultExecutionResult(consoleView, process);
+    }
+
+    public RunnerSettings getRunnerSettings() {
+        return null;
+    }
+
+    public ConfigurationPerRunnerSettings getConfigurationSettings() {
+        return null;
     }
 
 }
