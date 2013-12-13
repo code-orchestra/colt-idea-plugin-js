@@ -49,6 +49,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="codeOrchestra.colt.js.plugin.run.JsColtConfigurationType"/>
+        <completion.contributor language="JavaScript" implementationClass="codeOrchestra.colt.js.plugin.completion.ContextCompletionContributor"/>
     </extensions>
 
 </idea-plugin>

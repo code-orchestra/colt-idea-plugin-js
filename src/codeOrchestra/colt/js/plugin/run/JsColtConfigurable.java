@@ -1,8 +1,6 @@
 package codeOrchestra.colt.js.plugin.run;
 
 import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
-import com.intellij.ide.util.TreeClassChooserFactory;
-import com.intellij.ide.util.TreeFileChooser;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.ConfigurationException;
@@ -12,7 +10,6 @@ import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

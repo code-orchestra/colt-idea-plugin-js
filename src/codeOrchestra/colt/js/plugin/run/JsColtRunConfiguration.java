@@ -6,7 +6,6 @@ import codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
-import com.intellij.execution.application.ApplicationConfigurationType;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ModuleBasedConfiguration;
 import com.intellij.execution.configurations.RunConfiguration;
@@ -36,10 +35,6 @@ import java.util.Collection;
 public class JsColtRunConfiguration extends ModuleBasedConfiguration<ColtRunConfigurationModule> implements RunConfiguration {
 
     private String coltProjectPath;
-
-    public JsColtRunConfiguration(final String name, final Project project, ApplicationConfigurationType applicationConfigurationType) {
-        this(name, project, applicationConfigurationType.getConfigurationFactories()[0]);
-    }
 
     protected JsColtRunConfiguration(final String name, final Project project, final ConfigurationFactory factory) {
         super(name, new ColtRunConfigurationModule(project), factory);
