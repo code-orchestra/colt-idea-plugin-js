@@ -1,6 +1,7 @@
 package codeOrchestra.colt.js.plugin.completion;
 
 import codeOrchestra.colt.core.plugin.ColtSettings;
+import codeOrchestra.colt.core.plugin.icons.Icons;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,7 +71,7 @@ public class ContextCompletionContributor extends CompletionContributor {
                             logger.info("node: " + node + " params: " + methodParam);
                             System.out.println("node: " + node + " params: " + methodParam);
                         }
-                        result.addElement(LookupElementBuilder.create("COLT " + node));//todo: fix
+                        result.addElement(LookupElementBuilder.create(node).withTailText("[COLT]").withIcon(Icons.COLT_ICON_16));
                     }
 
                 } catch (Exception e) {
