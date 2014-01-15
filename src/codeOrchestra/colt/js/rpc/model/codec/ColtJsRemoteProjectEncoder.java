@@ -25,7 +25,7 @@ public class ColtJsRemoteProjectEncoder extends ColtRemoteProjectEncoder<ColtJsR
         // Paths
         Element pathsElement = projectDocument.createElement("paths");
         {
-            createElement("sources-set", "**/*.js, -lib/*.js", pathsElement);
+            createElement("sources-set", "**/*.js, **/*.htm*, -lib/*.js", pathsElement);
             createElement("excludes-set", "out/**, .git/**, .*/**, **/*bak___", pathsElement);
             createElement("reloads-set", "**/*.htm*, **/*.css, **/*.png", pathsElement);
         }
