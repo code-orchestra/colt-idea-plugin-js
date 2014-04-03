@@ -28,11 +28,12 @@
     </project-components>
 
   <actions>
-      <group id="COLT.Menu" text="COLT" description="COLT plugin menu" popup="true">
-          <add-to-group group-id="ToolsMenu" anchor="last" />
-          <action  id="colt.run.live" class="codeOrchestra.colt.js.plugin.actions.JsColtRunLiveAction" text="Start Live Session" />
-          <action  id="colt.run.production" class="codeOrchestra.colt.js.plugin.actions.JsColtRunProductionAction" text="Run Production Build" />
-      </group>
+      <!--<group id="COLT.Menu" text="COLT" description="COLT plugin menu">-->
+          <!--<add-to-group group-id="ToolsMenu" anchor="last" />-->
+          <!--<action  id="colt.run.live" class="codeOrchestra.colt.js.plugin.actions.JsColtRunLiveAction" text="Start Live Session" />-->
+          <!--<action  id="colt.run.production" class="codeOrchestra.colt.js.plugin.actions.JsColtRunProductionAction" text="Run Production Build" />-->
+          <!--<separator />-->
+      <!--</group>-->
 
       <group id="COLT.Run.Actions" text="Run With COLT">
           <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="last"/>
