@@ -20,7 +20,6 @@ import com.intellij.openapi.wm.ex.StatusBarEx;
 import codeOrchestra.colt.core.plugin.launch.ColtPathNotConfiguredException;
 import codeOrchestra.colt.core.plugin.view.ColtStatusWidget;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
-import codeOrchestra.colt.core.workset.Workset;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -56,8 +55,7 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
 
         // 2 - if it fails, start the COLT
         ProgressManager.progress("Starting new COLT instance");
-        Workset.addProjectPath(projectPath, true);
-        ColtLauncher.launch();
+        ColtLauncher.launch(projectPath);
 
         // 3 - and connect to it
         ProgressManager.progress("Trying to connect to COLT");

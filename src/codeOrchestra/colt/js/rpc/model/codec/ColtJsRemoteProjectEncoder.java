@@ -25,9 +25,7 @@ public class ColtJsRemoteProjectEncoder extends ColtRemoteProjectEncoder<ColtJsR
         // Paths
         Element pathsElement = projectDocument.createElement("paths");
         {
-            createElement("sources-set", "**/*.js, **/*.htm*, -lib/*.js", pathsElement);
             createElement("excludes-set", "out/**, .git/**, .*/**, **/*bak___", pathsElement);
-            createElement("reloads-set", "**/*.htm*, **/*.css, **/*.png", pathsElement);
         }
         rootElement.appendChild(pathsElement);
 
@@ -47,14 +45,18 @@ public class ColtJsRemoteProjectEncoder extends ColtRemoteProjectEncoder<ColtJsR
             Element settingsElement = createElement("settings");
             {
                 createElement("clear-log", "false", settingsElement);
-                createElement("disconnect", "true", settingsElement);
+                createElement("disconnect", "false", settingsElement);
             }
             liveElement.appendChild(settingsElement);
 
             // Launch
             Element launchElement = createElement("launch");
             {
-                createElement("launcher", "DEFAULT", launchElement);
+                createElement("launcher", project.getLauncher().toString(), launchElement);
+                createElement("browser-path", "", launchElement);
+                createElement("nodejs-path", "", launchElement);
+//                createElement("node-webkit-path", "", launchElement);
+//                createElement("console-value", "", launchElement);
             }
             liveElement.appendChild(launchElement);
 
@@ -63,7 +65,6 @@ public class ColtJsRemoteProjectEncoder extends ColtRemoteProjectEncoder<ColtJsR
             {
                 createElement("paused", "false", innerLiveElement);
                 createElement("max-loop", "10000", innerLiveElement);
-                createElement("live-html-edit", "true", innerLiveElement);
                 createElement("disable-in-minified", "true", innerLiveElement);
             }
             liveElement.appendChild(innerLiveElement);

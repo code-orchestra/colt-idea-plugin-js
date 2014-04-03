@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public final class ColtLauncher {
 
-    public static Process launch() throws ColtPathNotConfiguredException, ExecutionException, IOException {
+    public static Process launch(String projectPath) throws ColtPathNotConfiguredException, ExecutionException, IOException {
         if (!ColtSettings.getInstance().isColtPathValid()) {
             throw new ColtPathNotConfiguredException();
         }
@@ -20,11 +20,11 @@ public final class ColtLauncher {
         File coltBaseDir = new File(ColtSettings.getInstance().getColtPath());
 
         if (SystemInfo.isMac && coltBaseDir.getPath().endsWith(".app")) {
-            return Runtime.getRuntime().exec("open -n -a " + coltBaseDir.getPath());
-        } else if (SystemInfo.isWindows) {
+            return Runtime.getRuntime().exec("open -n -a " + coltBaseDir.getPath() + " " + projectPath);
+        } else if (SystemInfo.isWindows || SystemInfo.isLinux) {
             File executable = getApplicationExecutable(coltBaseDir);
             if (executable != null && executable.exists()) {
-                return startExecutable(executable.getPath());
+                return Runtime.getRuntime().exec(executable.getPath() + " " + projectPath);
             }
 
             throw new IllegalStateException("Can't locate the COLT executable");
@@ -33,22 +33,15 @@ public final class ColtLauncher {
         }
     }
 
-    private static Process startExecutable(String executable, String... args) throws IOException {
-        ProcessBuilder builder = new ProcessBuilder(executable);
-
-        if (args.length > 0) {
-            builder = builder.command(args);
-        }
-
-        return builder.start();
-    }
-
     public static File getApplicationExecutable(File coltBaseDir) {
         if (SystemInfo.isMac) {
             File executable = new File(coltBaseDir, "Contents/MacOs/JavaAppLauncher");
             return executable.exists() ? executable : null;
         } else if (SystemInfo.isWindows) {
             File executable = new File(coltBaseDir, "colt.exe");
+            return executable.exists() ? executable : null;
+        } else if (SystemInfo.isLinux) {
+            File executable = new File(coltBaseDir, "colt");
             return executable.exists() ? executable : null;
         }
 
