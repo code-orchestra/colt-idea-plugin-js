@@ -39,6 +39,7 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
     }
 
     private ColtRemoteService coltRemoteService;
+    private boolean liveOn;
     private List<ColtRemoteServiceListener> listeners = new ArrayList<ColtRemoteServiceListener>();
     private ConnectionStateUpdateThread connectionUpdateThread;
     private ColtStatusWidget coltStatusWidget;
@@ -86,6 +87,10 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
 
     public boolean isConnected() {
         return coltRemoteService != null;
+    }
+
+    public boolean isLive() {
+        return liveOn;
     }
 
     public void disconnect() {
@@ -206,6 +211,7 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
         for (ColtRemoteServiceListener listener : listeners) {
             listener.onStateUpdate(state);
         }
+        liveOn = state.getActiveConnections().length > 0;
     }
 
     private class ConnectionStateUpdateThread extends Thread {

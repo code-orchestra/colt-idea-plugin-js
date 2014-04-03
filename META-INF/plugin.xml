@@ -41,10 +41,11 @@
           <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtAction" />
       </group>
 
-      <!-- TODO: delete after testing -->
-      <action id="editor.test" class="codeOrchestra.colt.js.plugin.actions.TestContextAction" text="Test Context">
+      <group id="COLT.Editor.Actions" text="COLT">
           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-      </action>
+          <action id="colt.editor.showValue" class="codeOrchestra.colt.js.plugin.actions.ShowValueAction" text="Show value"/>
+          <separator />
+      </group>
   </actions>
 
     <extensions defaultExtensionNs="com.intellij">
