@@ -171,12 +171,12 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
     @Override
     public void projectClosed() {
         IdeFrame ideFrame = WindowManager.getInstance().getIdeFrame(myProject);
-        if (ideFrame == null) {
-            IdeFrame[] allFrames = WindowManager.getInstance().getAllFrames();
-            if (allFrames != null && allFrames.length > 0) {
-                ideFrame = allFrames[0];
-            }
-        }
+//        if (ideFrame == null) {
+//            IdeFrame[] allFrames = WindowManager.getInstance().getAllFrames();
+//            if (allFrames != null && allFrames.length > 0) {
+//                ideFrame = allFrames[0];
+//            }
+//        }
         if (ideFrame != null) {
             StatusBarEx statusBar = (StatusBarEx) ideFrame.getStatusBar();
             statusBar.removeWidget(ColtStatusWidget.ID);

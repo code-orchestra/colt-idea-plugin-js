@@ -6,7 +6,6 @@
     <vendor email="support@codeorchestra.com" url="http://codeorchestra.com/">CodeOrchestra</vendor>
 
 	<depends>com.intellij.modules.lang</depends>
-    <depends>JavaScript</depends>
 	
     <description><![CDATA[ COLT live coding tool integration plugin ]]></description>
 

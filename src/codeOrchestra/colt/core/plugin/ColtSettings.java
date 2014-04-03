@@ -152,12 +152,12 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
         }
 
         File coltDir = new File(coltPath);
-        return coltDir.exists() && coltDir.isDirectory() && new File(coltDir, "flex_sdk").exists();
+        return coltDir.exists() && coltDir.isDirectory();
     }
 
     public static class State {
 
-        public String securityToken = "";
+        public String securityToken = "a14d5455";
         public String coltPath = "";
 
     }
