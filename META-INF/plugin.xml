@@ -37,20 +37,28 @@
 
       <group id="COLT.Run.Actions" text="Run With COLT">
           <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="last"/>
+          <add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
           <separator />
-          <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtAction" />
+          <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtAction">
+              <keyboard-shortcut first-keystroke="ctrl shift F11" keymap="$default" />
+          </action>
           <action id="colt.js.runWithNode" text="Run With COLT (node.js)" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtNodeAction" />
           <action id="colt.js.runWithNodeWebkit" text="Run With COLT (node-webkit)" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtNodeWebkitAction" />
       </group>
 
       <group id="COLT.Editor.Actions" text="COLT">
           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-          <action id="colt.editor.showValue" class="codeOrchestra.colt.js.plugin.actions.ShowValueAction" text="Show value"/>
+          <action id="colt.editor.showValue" class="codeOrchestra.colt.js.plugin.actions.ShowValueAction" text="Show value">
+              <keyboard-shortcut first-keystroke="shift ctrl BACK_QUOTE" keymap="$default"/>
+          </action>
           <action id="colt.editor.reload" class="codeOrchestra.colt.js.plugin.actions.JsReloadAction" text="Reload in COLT">
               <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
           </action>
           <separator />
       </group>
+      <action id="dd" class="codeOrchestra.colt.js.plugin.actions.dd" text="dd" description="dd">
+          <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl F11"/>
+      </action>
   </actions>
 
     <extensions defaultExtensionNs="com.intellij">
