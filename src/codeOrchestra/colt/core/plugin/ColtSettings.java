@@ -138,6 +138,22 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
         myState.coltPath = path;
     }
 
+    public String getNodePath() {
+        return myState.nodePath;
+    }
+
+    public void setNodePath(String path) {
+        myState.nodePath = path;
+    }
+
+    public String getNodeWebkitPath() {
+        return myState.nodeWebkitPath;
+    }
+
+    public void setNodeWebkitPath(String path) {
+        myState.nodeWebkitPath = path;
+    }
+
     public String getSecurityToken() {
         return myState.securityToken;
     }
@@ -159,6 +175,8 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
 
         public String securityToken = "a14d5455";
         public String coltPath = "";
+        public String nodePath = "";
+        public String nodeWebkitPath = "";
 
     }
 

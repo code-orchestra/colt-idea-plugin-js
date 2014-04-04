@@ -1,7 +1,7 @@
 <idea-plugin version="2">
 
     <id>com.codeOrchestra.colt.js.webStormPlugin</id>
-    <name>COLT Plugin</name>
+    <name>COLT WebStorm Plugin</name>
     <version>1.0</version>
     <vendor email="support@codeorchestra.com" url="http://codeorchestra.com/">CodeOrchestra</vendor>
 
@@ -39,11 +39,16 @@
           <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="last"/>
           <separator />
           <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtAction" />
+          <action id="colt.js.runWithNode" text="Run With COLT (node.js)" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtNodeAction" />
+          <action id="colt.js.runWithNodeWebkit" text="Run With COLT (node-webkit)" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtNodeWebkitAction" />
       </group>
 
       <group id="COLT.Editor.Actions" text="COLT">
           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
           <action id="colt.editor.showValue" class="codeOrchestra.colt.js.plugin.actions.ShowValueAction" text="Show value"/>
+          <action id="colt.editor.reload" class="codeOrchestra.colt.js.plugin.actions.JsReloadAction" text="Reload in COLT">
+              <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
+          </action>
           <separator />
       </group>
   </actions>

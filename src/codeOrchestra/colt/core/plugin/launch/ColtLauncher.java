@@ -35,7 +35,7 @@ public final class ColtLauncher {
 
     public static File getApplicationExecutable(File coltBaseDir) {
         if (SystemInfo.isMac) {
-            File executable = new File(coltBaseDir, "Contents/MacOs/JavaAppLauncher");
+            File executable = coltBaseDir;
             return executable.exists() ? executable : null;
         } else if (SystemInfo.isWindows) {
             File executable = new File(coltBaseDir, "colt.exe");

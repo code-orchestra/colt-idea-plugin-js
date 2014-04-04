@@ -1,5 +1,6 @@
 package codeOrchestra.colt.js.plugin.actions;
 
+import codeOrchestra.colt.core.plugin.ColtSettings;
 import codeOrchestra.colt.core.plugin.icons.Icons;
 import codeOrchestra.colt.core.rpc.model.ColtLauncherType;
 import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
@@ -20,9 +21,9 @@ import com.intellij.openapi.vfs.VirtualFile;
 /**
  * @author Alexander Eliseyev
  */
-public class JsRunWithColtAction extends AnAction {
+public class JsRunWithColtNodeAction extends AnAction {
 
-    public JsRunWithColtAction() {
+    public JsRunWithColtNodeAction() {
     }
 
     @Override
@@ -36,8 +37,8 @@ public class JsRunWithColtAction extends AnAction {
         }
 
         VirtualFile[] virtualFileArray = (VirtualFile[]) e.getDataContext().getData("virtualFileArray");
-        if (virtualFileArray != null && virtualFileArray.length == 1 && !virtualFileArray[0].isDirectory() &&
-                (virtualFileArray[0].getPath().toLowerCase().endsWith(".htm") || virtualFileArray[0].getPath().toLowerCase().endsWith(".html"))) {
+        if (virtualFileArray != null && virtualFileArray.length == 1 && !virtualFileArray[0].isDirectory() && !"".equals(ColtSettings.getInstance().getNodePath()) &&
+                (virtualFileArray[0].getPath().toLowerCase().endsWith(".js"))) {
             e.getPresentation().setEnabled(true);
         } else {
             e.getPresentation().setEnabled(false);
@@ -74,7 +75,7 @@ public class JsRunWithColtAction extends AnAction {
         }
 
         // 1 - export project
-        String projectPath = JsColtPluginController.export(actionEvent.getProject(), mainDocumentName, mainDocumentPath, ColtLauncherType.BROWSER);
+        String projectPath = JsColtPluginController.export(actionEvent.getProject(), mainDocumentName, mainDocumentPath, ColtLauncherType.NODE_JS);
 
         // 2 - create a run configuration
         JsColtConfigurationType coltConfigurationType = getColtConfigurationType(runManager);

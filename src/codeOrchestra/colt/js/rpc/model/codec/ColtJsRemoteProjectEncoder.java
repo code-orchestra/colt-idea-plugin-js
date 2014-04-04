@@ -1,5 +1,7 @@
 package codeOrchestra.colt.js.rpc.model.codec;
 
+import codeOrchestra.colt.core.plugin.ColtSettings;
+import codeOrchestra.colt.core.rpc.model.ColtLauncherType;
 import codeOrchestra.colt.core.rpc.model.codec.ColtRemoteProjectEncoder;
 import codeOrchestra.colt.js.rpc.model.ColtJsRemoteProject;
 import org.w3c.dom.Document;
@@ -54,8 +56,16 @@ public class ColtJsRemoteProjectEncoder extends ColtRemoteProjectEncoder<ColtJsR
             {
                 createElement("launcher", project.getLauncher().toString(), launchElement);
                 createElement("browser-path", "", launchElement);
-                createElement("nodejs-path", "", launchElement);
-//                createElement("node-webkit-path", "", launchElement);
+                if (project.getLauncher() == ColtLauncherType.NODE_JS) {
+                    createElement("nodejs-path", ColtSettings.getInstance().getNodePath(), launchElement);
+                } else {
+                    createElement("nodejs-path", "", launchElement);
+                }
+                if (project.getLauncher() == ColtLauncherType.NODE_WEBKIT) {
+                    createElement("node-webkit-path", ColtSettings.getInstance().getNodeWebkitPath(), launchElement);
+                } else {
+                    createElement("node-webkit-path", "", launchElement);
+                }
 //                createElement("console-value", "", launchElement);
             }
             liveElement.appendChild(launchElement);
