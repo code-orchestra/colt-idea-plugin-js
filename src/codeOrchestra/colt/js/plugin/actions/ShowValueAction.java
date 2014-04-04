@@ -11,6 +11,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
 
+import java.awt.*;
+
 /**
  * @author Alexander Eliseyev
  */
@@ -54,11 +56,27 @@ public class ShowValueAction extends AbstractColtRemoteAction<ColtJsRemoteServic
                     currentState
             );
 
-            System.out.println(contextForPosition);
-            ideaProject.getComponent(ColtRemoteServiceProvider.class).fireMessageAvailable("Opp");
+//            JLabel jLabel = new JLabel("<html>" + contextForPosition + "</html>");
+//            jLabel.setMaximumSize(new Dimension(300, 100));
+//            HintManager.getInstance().showHint(jLabel, new RelativePoint(getPopupLocation(editor)), HintManager.HIDE_BY_ANY_KEY, 0);
+
+//            JComponent informationLabel = HintUtil.createInformationLabel(contextForPosition);
+//            HintManager.getInstance().showHint(informationLabel, new RelativePoint(getPopupLocation(editor)), HintManager.HIDE_BY_ANY_KEY, 0);
+
+            ideaProject.getComponent(ColtRemoteServiceProvider.class).fireMessageAvailable(contextForPosition);
         } catch (ColtRemoteTransferableException e) {
             e.printStackTrace();
         }
+    }
+
+    private Point getPopupLocation(EditorEx editor) {
+        final Point cursorAbsoluteLocation = editor.visualPositionToXY(editor.getCaretModel().getVisualPosition());
+        final Point editorLocation= editor.getComponent().getLocationOnScreen();
+        final Point editorContentLocation = editor.getContentComponent().getLocationOnScreen();
+        final Point popupLocation = new Point(editorContentLocation.x + cursorAbsoluteLocation.x ,
+                editorLocation.y + cursorAbsoluteLocation.y - editor.getScrollingModel().getVerticalScrollOffset());
+
+        return popupLocation;
     }
 
 }
