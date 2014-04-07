@@ -12,6 +12,7 @@ import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
 
 import java.awt.*;
+import java.util.regex.Pattern;
 
 /**
  * @author Alexander Eliseyev
@@ -45,6 +46,14 @@ public class ShowValueAction extends AbstractColtRemoteAction<ColtJsRemoteServic
         String filePath = editor.getVirtualFile().getPath();
         int offset = editor.getCaretModel().getOffset();
         String selection = editor.getSelectionModel().getSelectedText();
+        CharSequence charsSequence = editor.getDocument().getCharsSequence();
+        while(offset < charsSequence.length()) {
+            char c = charsSequence.charAt(offset);
+            if(c == '.' || c == '(' || c == ' ' || c == ';' || c == ',' || c == ')' || c == '\t' || c == '\r' || c == '\n') {
+                break;
+            }
+            offset++;
+        }
         String currentState = editor.getDocument().getText();
 
         try {
