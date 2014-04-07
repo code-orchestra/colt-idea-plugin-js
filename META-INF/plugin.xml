@@ -30,16 +30,14 @@
     </project-components>
 
   <actions>
-      <!--<group id="COLT.Menu" text="COLT" description="COLT plugin menu">-->
-          <!--<add-to-group group-id="ToolsMenu" anchor="last" />-->
-          <!--<action  id="colt.run.live" class="codeOrchestra.colt.js.plugin.actions.JsColtRunLiveAction" text="Start Live Session" />-->
-          <!--<action  id="colt.run.production" class="codeOrchestra.colt.js.plugin.actions.JsColtRunProductionAction" text="Run Production Build" />-->
-          <!--<separator />-->
-      <!--</group>-->
+      <group id="COLT.Menu" text="COLT" description="COLT plugin menu">
+          <add-to-group group-id="MainMenu" anchor="after" relative-to-action="ToolsMenu"/>
+      </group>
 
       <group id="COLT.Run.Actions" text="Run With COLT">
           <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="last"/>
           <add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
+          <add-to-group group-id="COLT.Menu" anchor="last"/>
           <separator />
           <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtAction">
               <keyboard-shortcut first-keystroke="ctrl shift F11" keymap="$default" />
@@ -50,12 +48,13 @@
 
       <group id="COLT.Editor.Actions" text="COLT">
           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+          <add-to-group group-id="COLT.Menu" anchor="last"/>
           <action id="colt.editor.executeFunction" class="codeOrchestra.colt.js.plugin.actions.ExecuteFunctionAction"
                   text="Execute Function" description="Execute Function">
               <keyboard-shortcut first-keystroke="shift ctrl F5" keymap="$default"/>
           </action>
           <action id="colt.editor.showValue" class="codeOrchestra.colt.js.plugin.actions.ShowValueAction" text="Show value">
-              <keyboard-shortcut first-keystroke="shift ctrl BACK_QUOTE" keymap="$default"/>
+              <keyboard-shortcut first-keystroke="shift ctrl F6" keymap="$default"/>
           </action>
           <action id="colt.editor.reload" class="codeOrchestra.colt.js.plugin.actions.JsReloadAction" text="Reload in COLT">
               <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
