@@ -36,9 +36,8 @@ public class ContextCompletionContributor extends CompletionContributor {
         extend(CompletionType.BASIC, AFTER_DOT, new CompletionProvider<CompletionParameters>() {
             @Override
             protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext processingContext, @NotNull CompletionResultSet result) {
-
                 ColtRemoteServiceProvider remoteServiceProvider = project.getComponent(ColtRemoteServiceProvider.class);
-                if (!remoteServiceProvider.isConnected() || !remoteServiceProvider.authorize()) {
+                if (!remoteServiceProvider.isConnected() || !remoteServiceProvider.authorize() || !remoteServiceProvider.isLive()) {
                     return;
                 }
 
@@ -61,16 +60,15 @@ public class ContextCompletionContributor extends CompletionContributor {
                             currentState,
                             "PROPERTIES"
                     );
-                    System.out.println("ColtSettings.getInstance().getSecurityToken() = " + props);
 
                     List<String> nodes = mapper.readValue(props, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
                     for (String node : nodes) {
-                        String methodId = remoteService.getContextForPosition(ColtSettings.getInstance().getSecurityToken(), filePath, offset, currentState, "METHOD_ID");
-                        String[] methodParams = remoteService.getMethodParams(ColtSettings.getInstance().getSecurityToken(), filePath, methodId);
-                        for (String methodParam : methodParams) {
-                            logger.info("node: " + node + " params: " + methodParam);
-                            System.out.println("node: " + node + " params: " + methodParam);
-                        }
+//                        String methodId = remoteService.getContextForPosition(ColtSettings.getInstance().getSecurityToken(), filePath, offset, currentState, "METHOD_ID");
+//                        String[] methodParams = remoteService.getMethodParams(ColtSettings.getInstance().getSecurityToken(), filePath, methodId);
+//                        for (String methodParam : methodParams) {
+//                            logger.info("node: " + node + " params: " + methodParam);
+//                            System.out.println("node: " + node + " params: " + methodParam);
+//                        }
                         result.addElement(LookupElementBuilder.create(node).withTailText("[COLT]").withIcon(Icons.COLT_ICON_16));
                     }
 
