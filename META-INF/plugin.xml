@@ -5,6 +5,8 @@
     <version>1.0</version>
     <vendor email="support@codeorchestra.com" url="http://codeorchestra.com/">CodeOrchestra</vendor>
 
+    <idea-version since-build="131"/>
+
 	<depends>com.intellij.modules.lang</depends>
 	
     <description><![CDATA[ COLT live coding tool integration plugin ]]></description>
@@ -56,9 +58,6 @@
           </action>
           <separator />
       </group>
-      <action id="dd" class="codeOrchestra.colt.js.plugin.actions.dd" text="dd" description="dd">
-          <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl F11"/>
-      </action>
   </actions>
 
     <extensions defaultExtensionNs="com.intellij">
