@@ -50,6 +50,10 @@
 
       <group id="COLT.Editor.Actions" text="COLT">
           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+          <action id="colt.editor.executeFunction" class="codeOrchestra.colt.js.plugin.actions.ExecuteFunctionAction"
+                  text="Execute Function" description="Execute Function">
+              <keyboard-shortcut first-keystroke="shift ctrl F5" keymap="$default"/>
+          </action>
           <action id="colt.editor.showValue" class="codeOrchestra.colt.js.plugin.actions.ShowValueAction" text="Show value">
               <keyboard-shortcut first-keystroke="shift ctrl BACK_QUOTE" keymap="$default"/>
           </action>
