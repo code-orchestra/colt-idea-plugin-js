@@ -19,10 +19,7 @@ public class ColtRemoteProcessHandler extends ProcessHandler implements ColtRemo
 
     private final ColtRemoteServiceProvider remoteServiceProvider;
 
-    private Project project;
-
     public ColtRemoteProcessHandler(Project project) {
-        this.project = project;
 
         remoteServiceProvider = project.getComponent(ColtRemoteServiceProvider.class);
         remoteServiceProvider.addListener(this);

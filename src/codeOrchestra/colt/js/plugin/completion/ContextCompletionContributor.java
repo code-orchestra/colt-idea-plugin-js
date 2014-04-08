@@ -81,10 +81,7 @@ public class ContextCompletionContributor extends CompletionContributor {
 
     @Override
     public void beforeCompletion(@NotNull CompletionInitializationContext context) {
-
-        if (project == null) {
-            project = context.getProject();
-        }
+        project = context.getProject();
     }
 
 }

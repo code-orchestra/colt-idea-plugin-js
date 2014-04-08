@@ -25,10 +25,7 @@ public class ColtStatusWidget extends JButton implements CustomStatusBarWidget, 
 
     public static final String ID = "COLTStatus";
 
-    private Project project;
-
     public ColtStatusWidget(final Project project, final ColtRemoteServiceProvider remoteServiceProvider) {
-        this.project = project;
 
         setOpaque(false);
         setFocusable(false);
