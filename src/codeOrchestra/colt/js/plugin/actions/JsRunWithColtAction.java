@@ -59,6 +59,9 @@ public class JsRunWithColtAction extends AnAction {
     }
 
     private void runWithColt(AnActionEvent actionEvent, String mainDocumentPath, String mainDocumentName, String runConfigurationName) {
+        // 1 - export project
+        String projectPath = JsColtPluginController.export(actionEvent.getProject(), mainDocumentName, mainDocumentPath, ColtLauncherType.BROWSER);
+
         // 0 - check if such configuration already exists
         RunManager runManager = RunManager.getInstance(actionEvent.getProject());
         for (RunnerAndConfigurationSettings runnerAndConfigurationSettings : runManager.getConfigurationSettings(getColtConfigurationType(runManager))) {
@@ -72,9 +75,6 @@ public class JsRunWithColtAction extends AnAction {
                 }
             }
         }
-
-        // 1 - export project
-        String projectPath = JsColtPluginController.export(actionEvent.getProject(), mainDocumentName, mainDocumentPath, ColtLauncherType.BROWSER);
 
         // 2 - create a run configuration
         JsColtConfigurationType coltConfigurationType = getColtConfigurationType(runManager);

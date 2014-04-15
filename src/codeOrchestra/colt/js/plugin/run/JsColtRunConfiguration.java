@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import utils.StringUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,6 +59,9 @@ public class JsColtRunConfiguration extends ModuleBasedConfiguration<ColtRunConf
         ThrowableComputable<Boolean, ExecutionException> coltStartTask = new ThrowableComputable<Boolean, ExecutionException>() {
             @Override
             public Boolean compute() throws ExecutionException {
+                if(!new File(coltProjectPath).exists()) {
+                    throw new ExecutionException("File " + coltProjectPath + " does not exist. Use 'Run With COLT' action to create it.");
+                }
                 try {
                     coltRemoteServiceProvider.initAndConnect(ColtJsRemoteService.class, coltProjectPath, getProject().getName());
                 } catch (ProcessCanceledException e) {

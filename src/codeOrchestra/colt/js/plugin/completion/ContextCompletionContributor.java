@@ -69,7 +69,7 @@ public class ContextCompletionContributor extends CompletionContributor {
 //                            logger.info("node: " + node + " params: " + methodParam);
 //                            System.out.println("node: " + node + " params: " + methodParam);
 //                        }
-                        result.addElement(LookupElementBuilder.create(node).withTailText("[COLT]").withIcon(Icons.COLT_ICON_16));
+                        result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
                     }
 
                 } catch (Exception e) {
