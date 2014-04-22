@@ -2,7 +2,7 @@
 
     <id>com.codeOrchestra.colt.js.webStormPlugin</id>
     <name>COLT WebStorm Plugin</name>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <vendor email="support@codeorchestra.com" url="http://codeorchestra.com/">CodeOrchestra</vendor>
 
     <idea-version since-build="131.1"/>
@@ -62,7 +62,6 @@
           <action id="colt.editor.reload" class="codeOrchestra.colt.js.plugin.actions.JsReloadAction" text="Reload in COLT">
               <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
           </action>
-          <action id="colt.test" class="codeOrchestra.colt.js.plugin.actions.TestGutter" text="testGutter"/>
           <separator />
       </group>
   </actions>
