@@ -117,6 +117,8 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
             } catch (ColtRemoteTransferableException e) {
                 Messages.showErrorDialog("Can't request an authorization key from COLT.\nMake sure COLT is active and running", COLT_TITLE);
                 return false;
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
         }
 

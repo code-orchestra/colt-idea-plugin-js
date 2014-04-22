@@ -60,6 +60,8 @@ public class ExecuteFunctionAction extends AbstractColtRemoteAction<ColtJsRemote
             }
         } catch (ColtRemoteTransferableException e) {
             e.printStackTrace();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 }

@@ -75,6 +75,8 @@ public class ShowValueAction extends AbstractColtRemoteAction<ColtJsRemoteServic
             ideaProject.getComponent(ColtRemoteServiceProvider.class).fireMessageAvailable(contextForPosition);
         } catch (ColtRemoteTransferableException e) {
             e.printStackTrace();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 

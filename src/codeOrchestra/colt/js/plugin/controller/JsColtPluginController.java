@@ -118,6 +118,8 @@ public final class JsColtPluginController {
                 } catch (ColtRemoteTransferableException e) {
                     remoteServiceProvider.fireCompileMessageAvailable(new ColtMessage("Can't start Live Session with COLT: " + e.getMessage()));
                     statusBar.notifyProgressByBalloon(MessageType.ERROR, "Starting Live Session has failed, check the error messages");
+                } catch (Throwable e) {
+                    e.printStackTrace();
                 }
             }
         }.queue();

@@ -44,6 +44,8 @@ public class JsReloadAction extends AbstractColtRemoteAction<ColtJsRemoteService
             coltRemoteService.reload(ColtSettings.getInstance().getSecurityToken());
         } catch (ColtRemoteTransferableException e) {
             e.printStackTrace();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 
