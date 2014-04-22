@@ -27,6 +27,9 @@
             <interface-class>codeOrchestra.colt.core.ColtFacade</interface-class>
             <implementation-class>codeOrchestra.colt.js.ColtJsFacade</implementation-class>
         </component>
+        <component>
+            <implementation-class>codeOrchestra.colt.js.plugin.IdleWatcher</implementation-class>
+        </component>
     </project-components>
 
   <actions>
@@ -59,6 +62,7 @@
           <action id="colt.editor.reload" class="codeOrchestra.colt.js.plugin.actions.JsReloadAction" text="Reload in COLT">
               <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
           </action>
+          <action id="colt.test" class="codeOrchestra.colt.js.plugin.actions.TestGutter" text="testGutter"/>
           <separator />
       </group>
   </actions>

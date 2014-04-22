@@ -42,7 +42,6 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
     private boolean liveOn;
     private List<ColtRemoteServiceListener> listeners = new ArrayList<ColtRemoteServiceListener>();
     private ConnectionStateUpdateThread connectionUpdateThread;
-    private ColtStatusWidget coltStatusWidget;
 
     public <S extends ColtRemoteService> void initAndConnect(Class<S> serviceClass, String projectPath, String projectName) throws ColtPathNotConfiguredException, ExecutionException, IOException, ProcessCanceledException {
         // 1 - try to connect to existing COLT instance
@@ -166,7 +165,7 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
     public void projectOpened() {
         IdeFrame ideFrame = WindowManager.getInstance().getIdeFrame(myProject);
         StatusBarEx statusBar = (StatusBarEx) ideFrame.getStatusBar();
-        coltStatusWidget = new ColtStatusWidget(myProject, this);
+        ColtStatusWidget coltStatusWidget = new ColtStatusWidget(myProject, this);
         statusBar.removeWidget(ColtStatusWidget.ID);
         statusBar.addWidget(coltStatusWidget);
     }

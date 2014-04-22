@@ -49,4 +49,8 @@ public interface ColtJsRemoteService extends ColtRemoteService {
 
     void findAndShowJavaDocs(String securityToken, String file, int position, String currentContent) throws ColtRemoteTransferableException;
 
+    String[] angularExpressionCompletion(String securityToken, int tagId, String leftExpression) throws ColtRemoteTransferableException;
+
+    ScriptPoint angularDirectiveDeclaration(String securityToken, String file, int position, String currentContent) throws ColtRemoteTransferableException;
+
 }

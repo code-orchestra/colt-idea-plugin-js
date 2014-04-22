@@ -5,4 +5,5 @@ package codeOrchestra.colt.js.rpc.model.jsScript;
  */
 public class MethodCount extends ScriptPoint {
     public int count;
+    public String methodId;
 }
