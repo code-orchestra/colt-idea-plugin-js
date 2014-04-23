@@ -141,8 +141,13 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
                 if (key.equals(path)) {
                     Map<String, MethodCount> integerIntegerMap = methodCountsMap.get(key);
                     for(MethodCount methodCount: integerIntegerMap.values()) {
-                        int line = editor.offsetToLogicalPosition(methodCount.position).line;
-                        countGutterController.add(editor, line, methodCount.count);
+                        try{
+                            int line = editor.offsetToLogicalPosition(methodCount.position).line;
+                            countGutterController.add(editor, line, methodCount.count);
+                        } catch (Exception e) {
+                            //wrong data from COLT
+                            //ignore
+                        }
                     }
                 }
             }
@@ -154,10 +159,15 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
                 filePath = filePath.replace("/", "\\");
             }
             if (path.equals(filePath)) {
-                int line = editor.offsetToLogicalPosition(lastRuntimeError.position).line;
-                errorEditor = editor;
-                errorHighlighter = editor.getMarkupModel().addLineHighlighter(line, HighlighterLayer.FIRST - 1, null);
-                errorHighlighter.setGutterIconRenderer(new ErrorGutterIconRenderer(lastRuntimeError.errorMessage));
+                try{
+                    int line = editor.offsetToLogicalPosition(lastRuntimeError.position).line;
+                    errorEditor = editor;
+                    errorHighlighter = editor.getMarkupModel().addLineHighlighter(line, HighlighterLayer.FIRST - 1, null);
+                    errorHighlighter.setGutterIconRenderer(new ErrorGutterIconRenderer(lastRuntimeError.errorMessage));
+                } catch (Exception e) {
+                    //wrong data from COLT
+                    //ignore
+                }
             }
 
         }
@@ -251,6 +261,10 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
                         lastRuntimeError = coltRemoteService.getLastRuntimeError(ColtSettings.getInstance().getSecurityToken());
                         ArrayList<MethodCount> methodCounts = coltRemoteService.getMethodCounts(ColtSettings.getInstance().getSecurityToken());
                         synchronized (methodCountsMap) {
+                            for(Map<String, MethodCount> value: methodCountsMap.values()) {
+                                value.clear();
+                            }
+                            methodCountsMap.clear();
                             for (MethodCount methodCount: methodCounts) {
                                 Map<String, MethodCount> integerIntegerMap = methodCountsMap.get(methodCount.filePath);
                                 if(integerIntegerMap == null) {

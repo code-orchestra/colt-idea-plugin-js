@@ -82,6 +82,8 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
                 listener.onDisconnected();
             }
         }
+
+        liveOn = false;
     }
 
     public boolean isConnected() {

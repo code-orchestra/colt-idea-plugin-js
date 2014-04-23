@@ -32,7 +32,7 @@ public class ShowValueAction extends AbstractColtRemoteAction<ColtJsRemoteServic
         Project project = e.getProject();
         if (project != null) {
             Object editor = e.getDataContext().getData("editor");
-            e.getPresentation().setEnabled(editor != null && editor instanceof EditorEx && project.getComponent(ColtRemoteServiceProvider.class).isLive());
+            e.getPresentation().setEnabled(editor != null && editor instanceof EditorEx && ((EditorEx) editor).getVirtualFile() != null && project.getComponent(ColtRemoteServiceProvider.class).isLive());
         } else {
             e.getPresentation().setEnabled(false);
         }
