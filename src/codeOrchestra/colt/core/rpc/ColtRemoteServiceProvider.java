@@ -95,6 +95,13 @@ public class ColtRemoteServiceProvider extends AbstractProjectComponent implemen
     }
 
     public void disconnect() {
+        if(coltRemoteService != null) {
+            try {
+                coltRemoteService.stopAllSessions(ColtSettings.getInstance().getSecurityToken());
+            } catch (Exception e) {
+                 //ignore
+            }
+        }
         setColtRemoteService(null);
     }
 

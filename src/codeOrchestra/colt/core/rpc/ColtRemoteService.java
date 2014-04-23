@@ -22,5 +22,6 @@ public interface ColtRemoteService {
 
     void checkAuth(String securityToken) throws InvalidAuthTokenException;
 
+    void stopAllSessions(String securityToken);
 
 }
