@@ -92,6 +92,7 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
 
     @Override
     public void onDisconnected() {
+        coltRemoteService = null;
         isRunning = false;
         if(watcherThread != null) {
             watcherThread.stopRightTHere();
@@ -117,10 +118,14 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
-                clearAllHighlighter();
-                EditorEx editor = (EditorEx)FileEditorManagerEx.getInstance(myProject).getSelectedTextEditor();
-                if (editor != null) {
-                    update(editor);
+                try {
+                    clearAllHighlighter();
+                    EditorEx editor = (EditorEx)FileEditorManagerEx.getInstance(myProject).getSelectedTextEditor();
+                    if (editor != null) {
+                        update(editor);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -174,7 +179,11 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
     }
 
     private void clearAllHighlighter() {
-        countGutterController.clear();
+        try {
+            countGutterController.clear();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
         if (errorEditor != null) {
             errorEditor.getMarkupModel().removeHighlighter(errorHighlighter);
@@ -256,7 +265,7 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
                     // ignore
                 }
 
-                if (isRunning) {
+                if (isRunning && coltRemoteService != null) {
                     try {
                         lastRuntimeError = coltRemoteService.getLastRuntimeError(ColtSettings.getInstance().getSecurityToken());
                         ArrayList<MethodCount> methodCounts = coltRemoteService.getMethodCounts(ColtSettings.getInstance().getSecurityToken());
@@ -282,7 +291,7 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
                     } catch (Throwable e) {
                         e.printStackTrace();
                     }
-                } else if(methodCountsMap.size() > 0) {
+                } else {
                     reset();
                 }
             }
