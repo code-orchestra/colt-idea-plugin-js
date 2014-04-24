@@ -19,7 +19,7 @@ public final class ProjectStorageHelper {
 
     public static File getColtProjectStorageDir(String coltProjectPath) {
         File storageDescriptorsFile = getStorageDescriptorsFile();
-        if (storageDescriptorsFile == null) {
+        if (storageDescriptorsFile == null || !storageDescriptorsFile.exists()) {
             return null;
         }
 
