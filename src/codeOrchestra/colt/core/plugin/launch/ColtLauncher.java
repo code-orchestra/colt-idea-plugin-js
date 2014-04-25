@@ -20,7 +20,7 @@ public final class ColtLauncher {
         File coltBaseDir = new File(ColtSettings.getInstance().getColtPath());
 
         if (SystemInfo.isMac && coltBaseDir.getPath().endsWith(".app")) {
-            return Runtime.getRuntime().exec("open -n -a " + coltBaseDir.getPath() + " --args \"" + projectPath + "\" -plugin:WS");
+            return new ProcessBuilder("open", "-n", "-a", coltBaseDir.getPath(), "--args",  projectPath, "-plugin:WS").start();
         } else if (SystemInfo.isWindows || SystemInfo.isLinux) {
             File executable = getApplicationExecutable(coltBaseDir);
             if (executable != null && executable.exists()) {

@@ -2,7 +2,7 @@
 
     <id>com.codeOrchestra.colt.js.webStormPlugin</id>
     <name>COLT WebStorm Plugin</name>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
     <vendor email="support@codeorchestra.com" url="http://codeorchestra.com/">CodeOrchestra</vendor>
 
     <idea-version since-build="131.1"/>
