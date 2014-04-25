@@ -61,7 +61,7 @@ public class JsRunWithColtNodeAction extends AnAction {
 
     private void runWithColt(AnActionEvent actionEvent, String mainDocumentPath, String mainDocumentName, String runConfigurationName) {
         // 1 - export project
-        String projectPath = JsColtPluginController.export(actionEvent.getProject(), mainDocumentName, mainDocumentPath, ColtLauncherType.BROWSER);
+        String projectPath = JsColtPluginController.export(actionEvent.getProject(), mainDocumentName, mainDocumentPath, ColtLauncherType.NODE_JS);
 
         // 0 - check if such configuration already exists
         RunManager runManager = RunManager.getInstance(actionEvent.getProject());
