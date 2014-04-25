@@ -24,7 +24,7 @@ public final class ColtLauncher {
         } else if (SystemInfo.isWindows || SystemInfo.isLinux) {
             File executable = getApplicationExecutable(coltBaseDir);
             if (executable != null && executable.exists()) {
-                return Runtime.getRuntime().exec(executable.getPath() + " \"" + projectPath + "\" -plugin:WS");
+                return new ProcessBuilder(executable.getPath(), projectPath, "-plugin:WS").start();
             }
 
             throw new IllegalStateException("Can't locate the COLT executable");
