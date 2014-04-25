@@ -61,7 +61,7 @@ public class ColtConfigurationPage {
                 "Node.js path",
                 "Select Node.js interpreter",
                 null,
-                new FileChooserDescriptor(false, true, false, false, false, false),
+                new FileChooserDescriptor(true, false, false, false, false, false),
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT,
                 false);
         panel4.add(nodeFileChooser, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
@@ -79,7 +79,7 @@ public class ColtConfigurationPage {
                 "Node-webkit path",
                 "Select Node-webkit interpreter folder",
                 null,
-                new FileChooserDescriptor(false, true, false, false, false, false),
+                new FileChooserDescriptor(true, false, false, false, false, false),
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT,
                 false);
         panel6.add(nodeWebKitFileChooser, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
@@ -89,7 +89,9 @@ public class ColtConfigurationPage {
     }
 
     private boolean isColtPathChanged() {
-        return !ObjectUtils.equals(coltSettings.getColtPath(), fileChooser.getText());
+        return !ObjectUtils.equals(coltSettings.getColtPath(), fileChooser.getText())
+                || !ObjectUtils.equals(coltSettings.getNodePath(), nodeFileChooser.getText())
+                || !ObjectUtils.equals(coltSettings.getNodeWebkitPath(), nodeWebKitFileChooser.getText());
     }
 
     public boolean isModified() {
@@ -110,6 +112,8 @@ public class ColtConfigurationPage {
 
     public void reset() {
         fileChooser.setText(coltSettings.getColtPath());
+        nodeFileChooser.setText(coltSettings.getNodePath());
+        nodeWebKitFileChooser.setText(coltSettings.getNodeWebkitPath());
     }
 
     public JPanel getContentPane() {
