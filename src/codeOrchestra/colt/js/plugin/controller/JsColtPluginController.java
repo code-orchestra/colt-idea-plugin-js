@@ -49,7 +49,10 @@ public final class JsColtPluginController {
         return export(project, project.getName(), mainDocumentPath, ColtLauncherType.BROWSER);
     }
 
+    public static ColtLauncherType lastLauncherType;
+
     public static String export(Project project, String projectName, String mainDocumentPath, ColtLauncherType launcherType) {
+        lastLauncherType = launcherType;
         ColtJsRemoteProject coltProject = new ColtJsRemoteProject();
 
         File baseDir = new File(project.getBasePath());

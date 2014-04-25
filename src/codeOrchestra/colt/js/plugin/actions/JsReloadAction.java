@@ -5,7 +5,9 @@ import codeOrchestra.colt.core.plugin.actions.AbstractColtRemoteAction;
 import codeOrchestra.colt.core.plugin.icons.Icons;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider;
 import codeOrchestra.colt.core.rpc.ColtRemoteTransferableException;
+import codeOrchestra.colt.core.rpc.model.ColtLauncherType;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
+import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.ex.EditorEx;
@@ -29,7 +31,10 @@ public class JsReloadAction extends AbstractColtRemoteAction<ColtJsRemoteService
         Project project = e.getProject();
         if (project != null) {
             Object editor = e.getDataContext().getData("editor");
-            e.getPresentation().setEnabled(editor != null && editor instanceof EditorEx && project.getComponent(ColtRemoteServiceProvider.class).isLive());
+            e.getPresentation().setEnabled(editor != null
+                    && editor instanceof EditorEx
+                    && project.getComponent(ColtRemoteServiceProvider.class).isLive()
+                    && JsColtPluginController.lastLauncherType != ColtLauncherType.NODE_JS);
         } else {
             e.getPresentation().setEnabled(false);
         }

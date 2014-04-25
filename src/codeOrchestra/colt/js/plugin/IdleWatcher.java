@@ -269,6 +269,7 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
                     try {
                         lastRuntimeError = coltRemoteService.getLastRuntimeError(ColtSettings.getInstance().getSecurityToken());
                     } catch (Throwable e) {
+                        lastRuntimeError = null;
                         //ignore
                     }
                     try {
