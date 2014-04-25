@@ -20,11 +20,11 @@ public final class ColtLauncher {
         File coltBaseDir = new File(ColtSettings.getInstance().getColtPath());
 
         if (SystemInfo.isMac && coltBaseDir.getPath().endsWith(".app")) {
-            return Runtime.getRuntime().exec("open -n -a " + coltBaseDir.getPath() + " --args " + projectPath + " -plugin:WS");
+            return Runtime.getRuntime().exec("open -n -a " + coltBaseDir.getPath() + " --args \"" + projectPath + "\" -plugin:WS");
         } else if (SystemInfo.isWindows || SystemInfo.isLinux) {
             File executable = getApplicationExecutable(coltBaseDir);
             if (executable != null && executable.exists()) {
-                return Runtime.getRuntime().exec(executable.getPath() + " " + projectPath + " -plugin:WS");
+                return Runtime.getRuntime().exec(executable.getPath() + " \"" + projectPath + "\" -plugin:WS");
             }
 
             throw new IllegalStateException("Can't locate the COLT executable");
