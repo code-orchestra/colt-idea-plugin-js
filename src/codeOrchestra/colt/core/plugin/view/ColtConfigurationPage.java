@@ -43,7 +43,7 @@ public class ColtConfigurationPage {
                 "COLT Installation Path",
                 "Specify the COLT location",
                 null,
-                new FileChooserDescriptor(false, true, false, false, false, false),
+                new FileChooserDescriptor(true, true, false, false, false, false),
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT,
                 false);
         panel2.add(fileChooser, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));

@@ -186,7 +186,11 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
         }
 
         File coltDir = new File(coltPath);
-        return coltDir.exists() && coltDir.isDirectory();
+        if(SystemInfo.isWindows || SystemInfo.isLinux) {
+            return coltDir.exists();
+        } else {
+            return coltDir.exists() && coltDir.isDirectory();
+        }
     }
 
     public static class State {

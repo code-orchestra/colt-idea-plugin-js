@@ -38,11 +38,19 @@ public final class ColtLauncher {
             File executable = coltBaseDir;
             return executable.exists() ? executable : null;
         } else if (SystemInfo.isWindows) {
-            File executable = new File(coltBaseDir, "colt.exe");
-            return executable.exists() ? executable : null;
+            if(coltBaseDir.isFile()) {
+                return coltBaseDir.exists() ? coltBaseDir : null;
+            } else {
+                File executable = new File(coltBaseDir, "colt.exe");
+                return executable.exists() ? executable : null;
+            }
         } else if (SystemInfo.isLinux) {
-            File executable = new File(coltBaseDir, "colt");
-            return executable.exists() ? executable : null;
+            if(coltBaseDir.isFile()) {
+                return coltBaseDir.exists() ? coltBaseDir : null;
+            } else {
+                File executable = new File(coltBaseDir, "colt");
+                return executable.exists() ? executable : null;
+            }
         }
 
         throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
