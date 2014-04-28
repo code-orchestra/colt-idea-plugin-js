@@ -14,25 +14,28 @@ import codeOrchestra.colt.js.rpc.model.jsScript.RuntimeErrorInfo;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.editor.event.EditorFactoryEvent;
 import com.intellij.openapi.editor.event.EditorFactoryListener;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.editor.markup.HighlighterLayer;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import utils.FileUtils;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Dima Kruk
@@ -66,9 +69,8 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
         countGutterController = new CountGutterController();
 
         editorFactoryListener = new CustomEditorFactoryListener();
+        EditorFactory.getInstance().addEditorFactoryListener(editorFactoryListener);
     }
-
-
 
     @Override
     public void onConnected() {
@@ -76,7 +78,7 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
         if(watcherThread == null) {
             watcherThread = new IdleWatcherThread();
             watcherThread.start();
-            EditorFactory.getInstance().addEditorFactoryListener(editorFactoryListener);
+            //EditorFactory.getInstance().addEditorFactoryListener(editorFactoryListener);
         }
     }
 
@@ -194,15 +196,86 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
     }
 
     private class CustomEditorFactoryListener implements EditorFactoryListener {
-
+        private final Map<VirtualFile, DocumentChangeTracker> changeTrackers = new HashMap<VirtualFile, DocumentChangeTracker>();;
         @Override
         public void editorCreated(@NotNull EditorFactoryEvent editorFactoryEvent) {
-            update((EditorEx) editorFactoryEvent.getEditor());
+            EditorEx editor = (EditorEx) editorFactoryEvent.getEditor();
+
+            VirtualFile vFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
+
+            if (vFile == null)
+            {
+                return;
+            }
+
+            String[] split = vFile.getPath().toLowerCase().split("\\.");
+            String ext = split[split.length - 1];
+            if(FileUtils.needAutoSave(ext)) {
+                DocumentChangeTracker documentChangeTracker = changeTrackers.get(vFile);
+                if (documentChangeTracker == null) {
+                    documentChangeTracker = new DocumentChangeTracker(editor.getDocument());
+                    changeTrackers.put(vFile, documentChangeTracker);
+                }
+                documentChangeTracker.getEditors().add(editor);
+            }
+            update(editor);
+
         }
 
         @Override
         public void editorReleased(@NotNull EditorFactoryEvent editorFactoryEvent) {
-            System.out.println("editorReleased");
+            Editor editor = editorFactoryEvent.getEditor();
+
+            VirtualFile vFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            if (vFile == null) {
+                return;
+            }
+
+            DocumentChangeTracker documentChangeTracker = changeTrackers.get(vFile);
+            if (documentChangeTracker != null) {
+                Set<Editor> editors = documentChangeTracker.getEditors();
+                editors.remove(editor);
+                if (editors.isEmpty()) {
+                    changeTrackers.remove(vFile);
+                    documentChangeTracker.release();
+                }
+            }
+        }
+    }
+
+    private class DocumentChangeTracker implements DocumentListener {
+        private final Document document;
+        private final Set<Editor> editors;
+
+        DocumentChangeTracker(Document document) {
+            this.document = document;
+            editors = new HashSet<Editor>();
+
+            document.addDocumentListener(this);
+        }
+
+        @NotNull
+        Set<Editor> getEditors() {
+            return editors;
+        }
+
+        public void beforeDocumentChange(DocumentEvent documentEvent) {
+
+        }
+
+        @Override
+        public void documentChanged(DocumentEvent documentEvent) {
+            if (isRunning && ColtSettings.getInstance().getAutoSaveEnabled()) {
+                try {
+                    FileDocumentManager.getInstance().saveDocumentAsIs(document);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        void release() {
+            document.removeDocumentListener(this);
         }
     }
 

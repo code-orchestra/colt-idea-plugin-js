@@ -16,6 +16,8 @@ public class FileUtils {
     private static final String[] IGNORED_DIRS = new String[]{".svn", ".git", "_svn"};
     private static final String[] IGNORED_FILES = new String[]{".DS_Store", ".colt"};
 
+    public static final String[] AUTO_SAVED_EXTENSION = new String[]{"html", "htm", "js", "css", "less", "sass", "jade", "coffee"};
+
     public static final FileFilter FILES_ONLY_FILTER = new FileFilter() {
         public boolean accept(File file) {
             return file.isFile();
@@ -27,6 +29,15 @@ public class FileUtils {
             return file.isDirectory();
         }
     };
+
+    public static boolean needAutoSave(String ext) {
+        for (String value : AUTO_SAVED_EXTENSION) {
+            if (value.equals(ext)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static String getFileDigestMD5(File file) throws IOException {
         byte[] bytes = new byte[(int) file.length()];

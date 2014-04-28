@@ -62,6 +62,7 @@
           <action id="colt.editor.reload" class="codeOrchestra.colt.js.plugin.actions.JsReloadAction" text="Reload in COLT">
               <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
           </action>
+          <action id="colt.autosave" class="codeOrchestra.colt.js.plugin.actions.AutoSaveAction" text="AutoSave"/>
           <separator />
       </group>
   </actions>

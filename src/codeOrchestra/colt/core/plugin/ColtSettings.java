@@ -162,6 +162,14 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
         myState.securityToken = token;
     }
 
+    public boolean getAutoSaveEnabled() {
+        return myState.autoSaveEnabled;
+    }
+
+    public void setAutoSaveEnabled(boolean value) {
+        myState.autoSaveEnabled = value;
+    }
+
     public static boolean validateColtPath(String coltPath) {
         if (StringUtils.isEmpty(coltPath)) {
             return false;
@@ -177,6 +185,7 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
         public String coltPath = "";
         public String nodePath = "";
         public String nodeWebkitPath = "";
+        public boolean autoSaveEnabled = true;
 
     }
 
