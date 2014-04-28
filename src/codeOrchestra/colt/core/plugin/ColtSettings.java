@@ -5,6 +5,7 @@ import com.intellij.openapi.components.*;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import codeOrchestra.colt.core.plugin.view.ColtConfigurationPage;
+import com.intellij.openapi.util.SystemInfo;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +48,15 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
     @Override
     public void loadState(State state) {
         myState = state;
+        //fix
+        if(!myState.nodePath.equals("") && new File(myState.nodePath).isDirectory()) {
+            if(SystemInfo.isWindows) {
+                myState.nodePath = new File(myState.nodePath, "node.exe").getPath();
+            } else {
+                myState.nodePath = new File(myState.nodePath, "node").getPath();
+            }
+        }
+        //end fix
     }
 
     public boolean isEmpty() {
