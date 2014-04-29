@@ -59,6 +59,9 @@
           <action id="colt.editor.showValue" class="codeOrchestra.colt.js.plugin.actions.ShowValueAction" text="Show value">
               <keyboard-shortcut first-keystroke="shift ctrl F6" keymap="$default"/>
           </action>
+          <action id="colt.showJSDocs" class="codeOrchestra.colt.js.plugin.actions.ShowJSDossAction" text="Show JS Doss">
+              <keyboard-shortcut first-keystroke="control shift Q" keymap="$default"/>
+          </action>
           <action id="colt.editor.reload" class="codeOrchestra.colt.js.plugin.actions.JsReloadAction" text="Reload in COLT">
               <keyboard-shortcut first-keystroke="control alt R" keymap="$default"/>
           </action>
