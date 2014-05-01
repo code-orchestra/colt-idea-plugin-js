@@ -14,6 +14,9 @@ import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.execution.executors.DefaultRunExecutor;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -37,8 +40,7 @@ public class JsRunWithColtNodeAction extends AnAction {
         }
 
         VirtualFile[] virtualFileArray = (VirtualFile[]) e.getDataContext().getData("virtualFileArray");
-        if (virtualFileArray != null && virtualFileArray.length == 1 && !virtualFileArray[0].isDirectory() && !"".equals(ColtSettings.getInstance().getNodePath()) &&
-                (virtualFileArray[0].getPath().toLowerCase().endsWith(".js"))) {
+        if (virtualFileArray != null && virtualFileArray.length == 1 && !virtualFileArray[0].isDirectory()) {
             e.getPresentation().setEnabled(true);
         } else {
             e.getPresentation().setEnabled(false);
@@ -51,6 +53,12 @@ public class JsRunWithColtNodeAction extends AnAction {
 
         if (virtualFileArray == null || virtualFileArray[0] == null) {
             throw new IllegalStateException(); // should not happen
+        }
+
+        String path = virtualFileArray[0].getPath().toLowerCase();
+        if(!(path.endsWith(".js"))) {
+            Notifications.Bus.notify(new Notification("colt.notification", "COLT", "Main document for node.js can be only JS file.", NotificationType.ERROR));
+            return;
         }
 
         String mainDocumentPath = virtualFileArray[0].getPath();

@@ -9,6 +9,9 @@ import codeOrchestra.colt.core.rpc.model.ColtLauncherType;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
@@ -32,9 +35,7 @@ public class JsReloadAction extends AbstractColtRemoteAction<ColtJsRemoteService
         if (project != null) {
             Object editor = e.getDataContext().getData("editor");
             e.getPresentation().setEnabled(editor != null
-                    && editor instanceof EditorEx
-                    && project.getComponent(ColtRemoteServiceProvider.class).isLive()
-                    && JsColtPluginController.lastLauncherType != ColtLauncherType.NODE_JS);
+                    && editor instanceof EditorEx);
         } else {
             e.getPresentation().setEnabled(false);
         }
@@ -42,6 +43,19 @@ public class JsReloadAction extends AbstractColtRemoteAction<ColtJsRemoteService
 
     @Override
     protected void doRemoteAction(AnActionEvent event, ColtJsRemoteService coltRemoteService) throws InvalidAuthTokenException {
+        Project project = event.getProject();
+        if(project == null) {
+            return;
+        }
+        if(!project.getComponent(ColtRemoteServiceProvider.class).isLive()) {
+            Notifications.Bus.notify(new Notification("colt.notification", "COLT", "To run this action you need active 'live' session.", NotificationType.ERROR));
+            return;
+        }
+        if (JsColtPluginController.lastLauncherType == ColtLauncherType.NODE_JS) {
+            Notifications.Bus.notify(new Notification("colt.notification", "COLT", "Action 'Reload in COLT' isn't available for node.js projects.", NotificationType.ERROR));
+            return;
+        }
+
         EditorEx editor = (EditorEx) event.getDataContext().getData("editor");
         assert editor != null;
 

@@ -56,6 +56,11 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
                 myState.nodePath = new File(myState.nodePath, "node").getPath();
             }
         }
+        if (myState.nodePath.equals("")) {
+           if(SystemInfo.isMac) {
+               myState.nodePath = "/usr/local/bin/node";
+           }
+        }
         //end fix
     }
 

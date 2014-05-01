@@ -9,6 +9,8 @@ import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import codeOrchestra.colt.js.rpc.model.ColtJsRemoteProject;
 import codeOrchestra.colt.js.rpc.model.codec.ColtJsRemoteProjectEncoder;
+import com.intellij.notification.NotificationDisplayType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
@@ -29,6 +31,7 @@ import java.io.File;
 public final class JsColtPluginController {
 
     private JsColtPluginController() {
+        Notifications.Bus.register("colt.notification", NotificationDisplayType.BALLOON);
     }
 
     private static final RemoteAction PRODUCTION_RUN_ACTION = new RemoteAction() {

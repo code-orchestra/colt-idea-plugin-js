@@ -7,6 +7,9 @@ import codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider;
 import codeOrchestra.colt.core.rpc.ColtRemoteTransferableException;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.ex.EditorEx;
@@ -30,7 +33,9 @@ public class ShowJSDossAction extends AbstractColtRemoteAction<ColtJsRemoteServi
         Project project = e.getProject();
         if (project != null) {
             Object editor = e.getDataContext().getData("editor");
-            e.getPresentation().setEnabled(editor != null && editor instanceof EditorEx && ((EditorEx) editor).getVirtualFile() != null && project.getComponent(ColtRemoteServiceProvider.class).isLive());
+            e.getPresentation().setEnabled(editor != null
+                    && editor instanceof EditorEx
+                    && ((EditorEx) editor).getVirtualFile() != null);
         } else {
             e.getPresentation().setEnabled(false);
         }
@@ -38,6 +43,15 @@ public class ShowJSDossAction extends AbstractColtRemoteAction<ColtJsRemoteServi
 
     @Override
     protected void doRemoteAction(AnActionEvent event, ColtJsRemoteService coltRemoteService) throws InvalidAuthTokenException {
+        Project project = event.getProject();
+        if(project == null) {
+            return;
+        }
+        if(!project.getComponent(ColtRemoteServiceProvider.class).isLive()) {
+            Notifications.Bus.notify(new Notification("colt.notification", "COLT", "To run this action you need active 'live' session.", NotificationType.ERROR));
+            return;
+        }
+
         EditorEx editor = (EditorEx) event.getDataContext().getData("editor");
         assert editor != null;
 
