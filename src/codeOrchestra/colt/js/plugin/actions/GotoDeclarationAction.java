@@ -7,21 +7,31 @@ import codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider;
 import codeOrchestra.colt.core.rpc.ColtRemoteTransferableException;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
+import codeOrchestra.colt.js.rpc.model.jsScript.ScriptPoint;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.editor.CaretModel;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.ScrollType;
+import com.intellij.openapi.editor.ScrollingModel;
 import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.fileEditor.FileEditor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author Dima Kruk
  */
-public class ShowJSDossAction extends AbstractColtRemoteAction<ColtJsRemoteService> {
+public class GotoDeclarationAction extends AbstractColtRemoteAction<ColtJsRemoteService> {
 
-    public ShowJSDossAction() {
-        super("Ask COLT for value");
+    public GotoDeclarationAction() {
+        super("Go to DeclarationAction");
     }
 
     @Override
@@ -57,6 +67,7 @@ public class ShowJSDossAction extends AbstractColtRemoteAction<ColtJsRemoteServi
 
         String filePath = editor.getVirtualFile().getPath();
         int offset = editor.getCaretModel().getOffset();
+
         CharSequence charsSequence = editor.getDocument().getCharsSequence();
         while(offset < charsSequence.length()) {
             char c = charsSequence.charAt(offset);
@@ -68,12 +79,31 @@ public class ShowJSDossAction extends AbstractColtRemoteAction<ColtJsRemoteServi
         String currentState = editor.getDocument().getText();
 
         try {
-            coltRemoteService.findAndShowJavaDocs(
+            ScriptPoint declarationPosition = coltRemoteService.getDeclarationPosition(
                     ColtSettings.getInstance().getSecurityToken(),
                     filePath,
                     offset,
                     currentState
             );
+
+            if (declarationPosition != null) {
+                VirtualFile fileByPath = LocalFileSystem.getInstance().findFileByPath(declarationPosition.filePath);
+                if (fileByPath != null) {
+                    FileEditorManager.getInstance(project).openFile(fileByPath, true);
+                    Editor selectedEditor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+                    if (selectedEditor != null) {
+                        CaretModel caretModel = selectedEditor.getCaretModel();
+                        caretModel.moveToOffset(declarationPosition.position, true);
+
+                        //Scroll to the caret
+                        ScrollingModel scrollingModel = editor.getScrollingModel();
+                        scrollingModel.scrollToCaret(ScrollType.CENTER);
+                    }
+                }
+            } else {
+                Notifications.Bus.notify(new Notification("colt.notification", "COLT", "Declaration was not found.", NotificationType.WARNING));
+            }
+
         } catch (ColtRemoteTransferableException e) {
             e.printStackTrace();
         } catch (Throwable e) {
