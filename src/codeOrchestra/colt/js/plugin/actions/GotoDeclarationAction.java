@@ -101,7 +101,7 @@ public class GotoDeclarationAction extends AbstractColtRemoteAction<ColtJsRemote
                     }
                 }
             } else {
-                Notifications.Bus.notify(new Notification("colt.notification", "COLT", "Declaration was not found.", NotificationType.WARNING));
+                //Notifications.Bus.notify(new Notification("colt.notification", "COLT", "Declaration was not found.", NotificationType.WARNING));
             }
 
         } catch (ColtRemoteTransferableException e) {
