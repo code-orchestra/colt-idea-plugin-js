@@ -64,7 +64,7 @@ public class ShowValueAction extends AbstractColtRemoteAction<ColtJsRemoteServic
         CharSequence charsSequence = editor.getDocument().getCharsSequence();
         while(offset < charsSequence.length()) {
             char c = charsSequence.charAt(offset);
-            if(c == '.' || c == '(' || c == ' ' || c == ';' || c == ',' || c == ')' || c == '\t' || c == '\r' || c == '\n') {
+            if(c == '.' || c == '(' || c == ' ' || c == ';' || c == ',' || c == ')' || c == '=' || c == '\t' || c == '\r' || c == '\n') {
                 break;
             }
             offset++;
