@@ -72,7 +72,7 @@ public class GotoDeclarationAction extends AbstractColtRemoteAction<ColtJsRemote
         CharSequence charsSequence = editor.getDocument().getCharsSequence();
         while(offset < charsSequence.length()) {
             char c = charsSequence.charAt(offset);
-            if(c == '.' || c == '(' || c == ' ' || c == ';' || c == ',' || c == ')' || c == '\t' || c == '\r' || c == '\n') {
+            if(c == '.' || c == '(' || c == ' ' || c == ';' || c == ',' || c == ')' || c == '=' || c == '\t' || c == '\r' || c == '\n') {
                 break;
             }
             offset++;
@@ -86,6 +86,16 @@ public class GotoDeclarationAction extends AbstractColtRemoteAction<ColtJsRemote
                     offset,
                     currentState
             );
+
+            //check for angular
+            if (declarationPosition == null && !filePath.endsWith(".js")) {
+                declarationPosition = coltRemoteService.angularDirectiveDeclaration(
+                        ColtSettings.getInstance().getSecurityToken(),
+                        filePath,
+                        offset,
+                        currentState
+                );
+            }
 
             if (declarationPosition != null) {
                 VirtualFile fileByPath = LocalFileSystem.getInstance().findFileByPath(declarationPosition.filePath);
