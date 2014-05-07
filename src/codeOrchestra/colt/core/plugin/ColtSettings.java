@@ -190,11 +190,19 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
             return false;
         }
 
-        File coltDir = new File(coltPath);
+        File coltLocation = new File(coltPath);
         if(SystemInfo.isWindows || SystemInfo.isLinux) {
-            return coltDir.exists();
+            if(coltLocation.isDirectory()) {
+                return new File(coltLocation, "colt.exe").exists() || (new File(coltLocation, "colt").exists() && new File(coltLocation, "colt").isFile());
+            } else {
+                return coltLocation.exists();
+            }
         } else {
-            return coltDir.exists() && coltDir.isDirectory();
+            if(coltPath.endsWith(".app")) {
+                return coltLocation.exists() && coltLocation.isDirectory();
+            } else {
+                return new File(coltPath, "COLT.app").exists() || new File(coltPath, "colt.app").exists();
+            }
         }
     }
 

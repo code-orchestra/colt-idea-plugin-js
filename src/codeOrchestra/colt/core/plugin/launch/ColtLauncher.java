@@ -19,8 +19,9 @@ public final class ColtLauncher {
 
         File coltBaseDir = new File(ColtSettings.getInstance().getColtPath());
 
-        if (SystemInfo.isMac && coltBaseDir.getPath().endsWith(".app")) {
-            return new ProcessBuilder("open", "-n", "-a", coltBaseDir.getPath(), "--args",  projectPath, "-plugin:WS").start();
+        if (SystemInfo.isMac) {
+            File executable = getApplicationExecutable(coltBaseDir);
+            return new ProcessBuilder("open", "-n", "-a", executable.getPath(), "--args",  projectPath, "-plugin:WS").start();
         } else if (SystemInfo.isWindows || SystemInfo.isLinux) {
             File executable = getApplicationExecutable(coltBaseDir);
             if (executable != null && executable.exists()) {
@@ -35,7 +36,15 @@ public final class ColtLauncher {
 
     public static File getApplicationExecutable(File coltBaseDir) {
         if (SystemInfo.isMac) {
-            File executable = coltBaseDir;
+            File executable;
+            if(coltBaseDir.getPath().endsWith(".app")) {
+                executable = coltBaseDir;
+            } else {
+                executable = new File(coltBaseDir, "COLT.app");
+                if(!executable.exists()) {
+                    executable = new File(coltBaseDir, "colt.app");
+                }
+            }
             return executable.exists() ? executable : null;
         } else if (SystemInfo.isWindows) {
             if(coltBaseDir.isFile()) {
