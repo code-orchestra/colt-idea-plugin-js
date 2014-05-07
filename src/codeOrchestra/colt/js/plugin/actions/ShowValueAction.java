@@ -7,6 +7,7 @@ import codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider;
 import codeOrchestra.colt.core.rpc.ColtRemoteTransferableException;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -86,7 +87,17 @@ public class ShowValueAction extends AbstractColtRemoteAction<ColtJsRemoteServic
 //            JComponent informationLabel = HintUtil.createInformationLabel(contextForPosition);
 //            HintManager.getInstance().showHint(informationLabel, new RelativePoint(getPopupLocation(editor)), HintManager.HIDE_BY_ANY_KEY, 0);
 
-            ideaProject.getComponent(ColtRemoteServiceProvider.class).fireMessageAvailable(contextForPosition);
+            if(contextForPosition != null) {
+                String value = contextForPosition.substring(contextForPosition.indexOf(":") + 2);
+                if (value.length() > 150) {
+                    value = value.substring(0, 150);
+                    value += "...";
+                }
+                HintManager.getInstance().showInformationHint(editor, value);
+                ideaProject.getComponent(ColtRemoteServiceProvider.class).fireMessageAvailable(contextForPosition);
+            } else {
+                HintManager.getInstance().showErrorHint(editor, "Value not found");
+            }
         } catch (ColtRemoteTransferableException e) {
             e.printStackTrace();
         } catch (Throwable e) {

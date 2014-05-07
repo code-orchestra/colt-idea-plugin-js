@@ -8,6 +8,7 @@ import codeOrchestra.colt.core.rpc.ColtRemoteTransferableException;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import codeOrchestra.colt.js.rpc.model.jsScript.ScriptPoint;
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -101,7 +102,7 @@ public class GotoDeclarationAction extends AbstractColtRemoteAction<ColtJsRemote
                     }
                 }
             } else {
-                //Notifications.Bus.notify(new Notification("colt.notification", "COLT", "Declaration was not found.", NotificationType.WARNING));
+                HintManager.getInstance().showErrorHint(editor, "Cannot find declaration to go to");
             }
 
         } catch (ColtRemoteTransferableException e) {
