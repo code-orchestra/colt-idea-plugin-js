@@ -70,7 +70,7 @@ public class JsColtRunConfiguration extends ModuleBasedConfiguration<ColtRunConf
                 } catch (ProcessCanceledException e) {
                     return false;
                 } catch (ColtPathNotConfiguredException e) {
-                    throw new ExecutionException("COLT installation path is not configured. Go to Preferences -> COLT", e);
+                    throw new ExecutionException("COLT installation path is not configured or not exist. Go to Preferences -> COLT", e);
                 } catch (IOException e) {
                     throw new ExecutionException("Error while trying to establish COLT connection", e);
                 }

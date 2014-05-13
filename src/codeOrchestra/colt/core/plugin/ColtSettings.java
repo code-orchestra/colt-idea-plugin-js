@@ -49,6 +49,13 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
     public void loadState(State state) {
         myState = state;
         //fix
+        if(myState.coltPath.equals("")) {
+            if(SystemInfo.isMac) {
+                myState.coltPath = "/Applications/COLT/COLT.app";
+            } else if(SystemInfo.isWindows) {
+                myState.coltPath = "C:\\Program Files\\COLT\\colt.exe";
+            }
+        }
         if(!myState.nodePath.equals("") && new File(myState.nodePath).isDirectory()) {
             if(SystemInfo.isWindows) {
                 myState.nodePath = new File(myState.nodePath, "node.exe").getPath();
