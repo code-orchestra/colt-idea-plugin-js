@@ -49,6 +49,7 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
     public void loadState(State state) {
         myState = state;
         //fix
+        System.out.println("myState.coltPath = " + myState.coltPath);
         if(myState.coltPath.equals("")) {
             if(SystemInfo.isMac) {
                 myState.coltPath = "/Applications/COLT/COLT.app";
@@ -220,6 +221,18 @@ public class ColtSettings implements PersistentStateComponent<ColtSettings.State
         public String nodePath = "";
         public String nodeWebkitPath = "";
         public boolean autoSaveEnabled = true;
+
+        State() {
+            if(SystemInfo.isMac) {
+                coltPath = "/Applications/COLT/COLT.app";
+            } else if(SystemInfo.isWindows) {
+                coltPath = "C:\\Program Files\\COLT\\colt.exe";
+            }
+
+            if(SystemInfo.isMac) {
+                nodePath = "/usr/local/bin/node";
+            }
+        }
 
     }
 
