@@ -14,6 +14,9 @@ import com.intellij.execution.configurations.ModuleBasedConfiguration;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.options.SettingsEditor;
@@ -70,6 +73,7 @@ public class JsColtRunConfiguration extends ModuleBasedConfiguration<ColtRunConf
                 } catch (ProcessCanceledException e) {
                     return false;
                 } catch (ColtPathNotConfiguredException e) {
+                    Notifications.Bus.notify(new Notification("colt.notification", "COLT", "COLT installation path is not configured or not exist. Go to Preferences -> COLT", NotificationType.ERROR));
                     throw new ExecutionException("COLT installation path is not configured or not exist. Go to Preferences -> COLT", e);
                 } catch (IOException e) {
                     throw new ExecutionException("Error while trying to establish COLT connection", e);
