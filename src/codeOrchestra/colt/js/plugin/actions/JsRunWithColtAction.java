@@ -76,7 +76,6 @@ public class JsRunWithColtAction extends AnAction {
         Matcher m = META_PATTERN.matcher(content);
         while(m.find()) {
             String group = m.group(0);
-            System.out.println("m = " + group);
             Matcher matcher = META_NAME.matcher(group);
             if(matcher.find()) {
                 String name = matcher.group(1);
