@@ -340,13 +340,18 @@ public class IdleWatcher extends AbstractProjectComponent implements ProjectComp
 
                 if (isRunning && coltRemoteService != null) {
                     try {
-                        lastRuntimeError = coltRemoteService.getLastRuntimeError(ColtSettings.getInstance().getSecurityToken());
+                        synchronized (ColtRemoteServiceProvider.MONITOR) {
+                            lastRuntimeError = coltRemoteService.getLastRuntimeError(ColtSettings.getInstance().getSecurityToken());
+                        }
                     } catch (Throwable e) {
                         lastRuntimeError = null;
                         //ignore
                     }
                     try {
-                        ArrayList<MethodCount> methodCounts = coltRemoteService.getMethodCounts(ColtSettings.getInstance().getSecurityToken());
+                        ArrayList<MethodCount> methodCounts;
+                        synchronized (ColtRemoteServiceProvider.MONITOR) {
+                            methodCounts = coltRemoteService.getMethodCounts(ColtSettings.getInstance().getSecurityToken());
+                        }
                         synchronized (methodCountsMap) {
                             for(Map<String, MethodCount> value: methodCountsMap.values()) {
                                 value.clear();

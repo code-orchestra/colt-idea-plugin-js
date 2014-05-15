@@ -13,9 +13,7 @@ import com.intellij.openapi.application.AccessToken;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.patterns.PsiElementPattern;
@@ -41,6 +39,8 @@ public class ContextCompletionContributor extends CompletionContributor {
 
     private Project project;
 
+    private boolean extendWasCalled = false;
+
     public ContextCompletionContributor() {
 
         extend(CompletionType.BASIC, AFTER_DOT, new CompletionProvider<CompletionParameters>() {
@@ -61,25 +61,46 @@ public class ContextCompletionContributor extends CompletionContributor {
                 String currentState = parameters.getOriginalFile().getText();
 
                 try {
-                    ColtJsRemoteService remoteService = remoteServiceProvider.getService();
-                    System.out.println("getContextForPosition");
-                    String props = remoteService.getContextForPosition(
-                            ColtSettings.getInstance().getSecurityToken(),
-                            filePath,
-                            offset,
-                            currentState,
-                            "PROPERTIES"
-                    );
+                    synchronized (ColtRemoteServiceProvider.MONITOR) {
+                        ColtJsRemoteService remoteService = remoteServiceProvider.getService();
+                        String props = remoteService.getContextForPosition(
+                                ColtSettings.getInstance().getSecurityToken(),
+                                filePath,
+                                offset,
+                                currentState,
+                                "PROPERTIES"
+                        );
 
-                    List<String> nodes = mapper.readValue(props, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-                    for (String node : nodes) {
-//                        String methodId = remoteService.getContextForPosition(ColtSettings.getInstance().getSecurityToken(), filePath, offset, currentState, "METHOD_ID");
-//                        String[] methodParams = remoteService.getMethodParams(ColtSettings.getInstance().getSecurityToken(), filePath, methodId);
-//                        for (String methodParam : methodParams) {
-//                            logger.info("node: " + node + " params: " + methodParam);
-//                            System.out.println("node: " + node + " params: " + methodParam);
-//                        }
-                        result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
+                        if (props != null) {
+                            List<String> nodes = mapper.readValue(props, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
+                            for (String node : nodes) {
+                                result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
+                            }
+                        } else {
+                            Editor editor = ((EditorWindowImpl) parameters.getEditor()).getDelegate();
+                            filePath = ((VirtualFileWindowImpl) virtualFile).getDelegate().getPath();
+                            offset = editor.getCaretModel().getOffset();
+                            currentState = editor.getDocument().getText();
+
+                            String enclosingTagId = remoteService.getEnclosingTagId(
+                                    ColtSettings.getInstance().getSecurityToken(),
+                                    filePath,
+                                    offset,
+                                    currentState
+                            );
+
+                            int TagId = Integer.parseInt(enclosingTagId);
+                            String[] propsList = remoteService.angularExpressionCompletionAfterDot(
+                                    ColtSettings.getInstance().getSecurityToken(),
+                                    TagId,
+                                    parameters.getOffset(),
+                                    parameters.getOriginalFile().getText()
+                            );
+                            for (String node : propsList) {
+                                result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
+                            }
+                            extendWasCalled = true;
+                        }
                     }
 
                 } catch (Exception e) {
@@ -93,6 +114,10 @@ public class ContextCompletionContributor extends CompletionContributor {
     @Override
     public void fillCompletionVariants(final CompletionParameters parameters, final CompletionResultSet result) {
         super.fillCompletionVariants(parameters, result);
+        if(extendWasCalled) {
+            extendWasCalled = false;
+            return;
+        }
         ColtRemoteServiceProvider remoteServiceProvider = project.getComponent(ColtRemoteServiceProvider.class);
         if (!remoteServiceProvider.isConnected() || !remoteServiceProvider.authorize() || !remoteServiceProvider.isLive()) {
             return;
@@ -102,34 +127,31 @@ public class ContextCompletionContributor extends CompletionContributor {
         if (virtualFile == null) {
             return;
         }
-
         if("AngularJS".equals(getElementLanguage(parameters).getID())) {
             try {
-                EditorEx editor = (EditorEx) parameters.getEditor();
-                Editor editorr = ((EditorWindowImpl) editor).getDelegate();
+                Editor editor = ((EditorWindowImpl) parameters.getEditor()).getDelegate();
                 String filePath = ((VirtualFileWindowImpl) virtualFile).getDelegate().getPath();
-                int offset = editorr.getCaretModel().getOffset();
-                String currentState = editorr.getDocument().getText();
+                int offset = editor.getCaretModel().getOffset();
+                String currentState = editor.getDocument().getText();
 
-                ColtJsRemoteService remoteService = remoteServiceProvider.getService();
-                System.out.println("getContextForPosition");
-                String enclosingTagId = remoteService.getEnclosingTagId(
-                        ColtSettings.getInstance().getSecurityToken(),
-                        filePath,
-                        offset,
-                        currentState
-                );
-                System.out.println("enclosingTagId = " + enclosingTagId);
-                int TagId = Integer.parseInt(enclosingTagId);
-                String[] props = remoteService.angularExpressionCompletion(
-                        ColtSettings.getInstance().getSecurityToken(),
-                        TagId,
-                        parameters.getOriginalFile().getText()
-                );
-                System.out.println("props = " + props);
-                //List<String> nodes = mapper.readValue(props, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-                for (String node : props) {
-                    result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
+                synchronized (ColtRemoteServiceProvider.MONITOR) {
+                    ColtJsRemoteService remoteService = remoteServiceProvider.getService();
+                    String enclosingTagId = remoteService.getEnclosingTagId(
+                            ColtSettings.getInstance().getSecurityToken(),
+                            filePath,
+                            offset,
+                            currentState
+                    );
+
+                    int TagId = Integer.parseInt(enclosingTagId);
+                    String[] props = remoteService.angularExpressionCompletion(
+                            ColtSettings.getInstance().getSecurityToken(),
+                            TagId,
+                            parameters.getOriginalFile().getText()
+                    );
+                    for (String node : props) {
+                        result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
+                    }
                 }
 
             } catch (Exception e) {

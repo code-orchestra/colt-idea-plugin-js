@@ -30,7 +30,7 @@ import java.util.List;
  * @author Alexander Eliseyev
  */
 public class ColtRemoteServiceProvider extends AbstractProjectComponent implements ProjectComponent {
-
+    public static final Object MONITOR = new Object();
     private static final String COLT_TITLE = "COLT Connectivity";
 
     public ColtRemoteServiceProvider(Project project) {
