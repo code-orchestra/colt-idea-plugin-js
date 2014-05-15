@@ -7,7 +7,7 @@ import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.injected.editor.EditorWindowImpl;
+import com.intellij.injected.editor.EditorWindow;
 import com.intellij.injected.editor.VirtualFileWindowImpl;
 import com.intellij.openapi.application.AccessToken;
 import com.intellij.openapi.application.ReadAction;
@@ -77,7 +77,7 @@ public class ContextCompletionContributor extends CompletionContributor {
                                 result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
                             }
                         } else {
-                            Editor editor = ((EditorWindowImpl) parameters.getEditor()).getDelegate();
+                            Editor editor = ((EditorWindow) parameters.getEditor()).getDelegate();
                             filePath = ((VirtualFileWindowImpl) virtualFile).getDelegate().getPath();
                             offset = editor.getCaretModel().getOffset();
                             currentState = editor.getDocument().getText();
@@ -129,7 +129,7 @@ public class ContextCompletionContributor extends CompletionContributor {
         }
         if("AngularJS".equals(getElementLanguage(parameters).getID())) {
             try {
-                Editor editor = ((EditorWindowImpl) parameters.getEditor()).getDelegate();
+                Editor editor = ((EditorWindow) parameters.getEditor()).getDelegate();
                 String filePath = ((VirtualFileWindowImpl) virtualFile).getDelegate().getPath();
                 int offset = editor.getCaretModel().getOffset();
                 String currentState = editor.getDocument().getText();
