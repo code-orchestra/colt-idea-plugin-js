@@ -16,6 +16,7 @@
     </application-components>
 
     <project-components>
+        <component><implementation-class>codeOrchestra.colt.js.plugin.ProjectSettings</implementation-class></component>
         <component>
             <interface-class>codeOrchestra.colt.core.rpc.discovery.ColtServiceLocator</interface-class>
             <implementation-class>codeOrchestra.colt.core.rpc.discovery.FileBasedColtServiceLocator</implementation-class>
@@ -42,11 +43,11 @@
           <add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
           <add-to-group group-id="COLT.Menu" anchor="last"/>
           <separator />
-          <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtAction">
+          <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtAction">
               <keyboard-shortcut first-keystroke="ctrl shift F11" keymap="$default" />
           </action>
-          <action id="colt.js.runWithNode" text="Run With COLT (node.js)" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtNodeAction" />
-          <action id="colt.js.runWithNodeWebkit" text="Run With COLT (node-webkit)" class="codeOrchestra.colt.js.plugin.actions.JsRunWithColtNodeWebkitAction" />
+          <action id="colt.js.runWithNode" text="Run With COLT (node.js)" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtNodeAction" />
+          <action id="colt.js.runWithNodeWebkit" text="Run With COLT (node-webkit)" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtNodeWebkitAction" />
       </group>
 
       <group id="COLT.Editor.Actions" text="COLT">

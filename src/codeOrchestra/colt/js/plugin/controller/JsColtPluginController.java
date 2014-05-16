@@ -6,6 +6,7 @@ import codeOrchestra.colt.core.rpc.ColtRemoteTransferableException;
 import codeOrchestra.colt.core.rpc.model.ColtLauncherType;
 import codeOrchestra.colt.core.rpc.model.ColtMessage;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
+import codeOrchestra.colt.js.plugin.ProjectSettings;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import codeOrchestra.colt.js.rpc.model.ColtJsRemoteProject;
 import codeOrchestra.colt.js.rpc.model.codec.ColtJsRemoteProjectEncoder;

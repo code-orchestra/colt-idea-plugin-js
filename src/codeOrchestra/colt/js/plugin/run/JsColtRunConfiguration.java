@@ -3,7 +3,7 @@ package codeOrchestra.colt.js.plugin.run;
 import codeOrchestra.colt.core.plugin.launch.ColtPathNotConfiguredException;
 import codeOrchestra.colt.core.plugin.run.ColtRunConfigurationModule;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceProvider;
-import codeOrchestra.colt.core.rpc.model.ColtLauncherType;
+import codeOrchestra.colt.js.plugin.ProjectSettings;
 import codeOrchestra.colt.js.plugin.controller.JsColtPluginController;
 import codeOrchestra.colt.js.rpc.ColtJsRemoteService;
 import codeOrchestra.colt.js.rpc.model.codec.ColtJSRemoteProjectDecoder;
@@ -62,6 +62,14 @@ public class JsColtRunConfiguration extends ModuleBasedConfiguration<ColtRunConf
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException {
         final ColtRemoteServiceProvider coltRemoteServiceProvider = getProject().getComponent(ColtRemoteServiceProvider.class);
         JsColtPluginController.lastLauncherType = ColtJSRemoteProjectDecoder.getLauncher(coltProjectPath);
+
+        ProjectSettings.State state = getProject().getComponent(ProjectSettings.class).getState();
+        if (state != null) {
+            state.lastLauncherType = JsColtPluginController.lastLauncherType;
+            state.runConfigurationName = getName();
+            state.projectPath = coltProjectPath;
+        }
+
         ThrowableComputable<Boolean, ExecutionException> coltStartTask = new ThrowableComputable<Boolean, ExecutionException>() {
             @Override
             public Boolean compute() throws ExecutionException {
