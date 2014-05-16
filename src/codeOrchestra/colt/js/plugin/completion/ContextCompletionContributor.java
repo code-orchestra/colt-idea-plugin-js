@@ -118,6 +118,9 @@ public class ContextCompletionContributor extends CompletionContributor {
             extendWasCalled = false;
             return;
         }
+        if(project == null) {
+            return;
+        }
         ColtRemoteServiceProvider remoteServiceProvider = project.getComponent(ColtRemoteServiceProvider.class);
         if (!remoteServiceProvider.isConnected() || !remoteServiceProvider.authorize() || !remoteServiceProvider.isLive()) {
             return;
