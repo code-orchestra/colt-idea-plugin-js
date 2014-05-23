@@ -43,11 +43,14 @@
           <add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
           <add-to-group group-id="COLT.Menu" anchor="last"/>
           <separator />
-          <action id="colt.js.runWith" text="Run With COLT" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtAction">
+          <action id="colt.js.runLast" text="Run last configuration" class="codeOrchestra.colt.js.plugin.actions.run.JsRunLastConfiguration">
+              <!--<keyboard-shortcut first-keystroke="ctrl shift F11" keymap="$default" />-->
+          </action>
+          <action id="colt.js.runWith" text="Run with COLT" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtAction">
               <keyboard-shortcut first-keystroke="ctrl shift F11" keymap="$default" />
           </action>
-          <action id="colt.js.runWithNode" text="Run With COLT (node.js)" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtNodeAction" />
-          <action id="colt.js.runWithNodeWebkit" text="Run With COLT (node-webkit)" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtNodeWebkitAction" />
+          <action id="colt.js.runWithNode" text="Run with COLT (node.js)" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtNodeAction" />
+          <action id="colt.js.runWithNodeWebkit" text="Run with COLT (node-webkit)" class="codeOrchestra.colt.js.plugin.actions.run.JsRunWithColtNodeWebkitAction" />
       </group>
 
       <group id="COLT.Editor.Actions" text="COLT">

@@ -18,8 +18,14 @@ import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+
+import java.io.File;
 
 /**
  * @author Dima Kruk
@@ -27,30 +33,71 @@ import com.intellij.openapi.vfs.VirtualFile;
 public abstract class JsRunWithColt extends AnAction {
 
     protected ColtLauncherType myLauncherType;
+    protected String postfix = "";
+    protected String mainFilePath;
 
     @Override
     public void update(AnActionEvent e) {
         super.update(e);
 
-        e.getPresentation().setIcon(Icons.COLT_ICON_16);
+        Presentation presentation = e.getPresentation();
+        presentation.setIcon(Icons.COLT_ICON_16);
 
-        if (e.getProject() == null) {
-            e.getPresentation().setEnabled(false);
-        }
-
-        VirtualFile[] virtualFileArray = (VirtualFile[]) e.getDataContext().getData("virtualFileArray");
-        if (virtualFileArray != null && virtualFileArray.length == 1 && !virtualFileArray[0].isDirectory()) {
-            e.getPresentation().setEnabled(true);
+        Project project = e.getProject();
+        if (project == null) {
+            presentation.setEnabled(false);
         } else {
-            e.getPresentation().setEnabled(false);
+            boolean isEnable = false;
+            if(!"MainMenu".equals(e.getPlace())) {
+                VirtualFile[] virtualFileArray = (VirtualFile[]) e.getDataContext().getData("virtualFileArray");
+                if (virtualFileArray != null && virtualFileArray.length == 1 && !virtualFileArray[0].isDirectory()) {
+                    presentation.setText(updateText(virtualFileArray[0].getName()));
+                    mainFilePath = virtualFileArray[0].getPath();
+                    presentation.setEnabled(true);
+                    isEnable = true;
+                }
+            } else {
+                EditorEx editor = (EditorEx)FileEditorManagerEx.getInstance(project).getSelectedTextEditor();
+                if (editor != null && editor.getVirtualFile() != null) {
+                    presentation.setText(updateText(editor.getVirtualFile().getName()));
+                    mainFilePath = editor.getVirtualFile().getPath();
+                    presentation.setEnabled(true);
+                    isEnable = true;
+                } else {
+                    File file = null;
+                    if (myLauncherType == ColtLauncherType.BROWSER) {
+                        file = new File(project.getBasePath(), "index.html");
+                    } else if (myLauncherType == ColtLauncherType.NODE_JS) {
+                        file = new File(project.getBasePath(), "index.js");
+                    }
+
+                    if(file != null && file.exists()) {
+                        presentation.setText(updateText(file.getName()));
+                        mainFilePath = file.getPath();
+                        presentation.setEnabled(true);
+                        isEnable = true;
+                    }
+                }
+            }
+
+            if (!isEnable) {
+                presentation.setText(updateText(""));
+                presentation.setEnabled(false);
+                mainFilePath = "";
+            }
         }
+
+    }
+
+    private String updateText(String filename) {
+         return "Run " + filename + " with COLT"+ postfix;
     }
 
     protected String exportProject(Project project, String mainDocumentName, String mainDocumentPath) {
         return JsColtPluginController.export(project, mainDocumentName, mainDocumentPath, myLauncherType);
     }
 
-    protected RunnerAndConfigurationSettings findConfiguration(Project project, String runConfigurationName) {
+    public static RunnerAndConfigurationSettings findConfiguration(Project project, String runConfigurationName) {
         RunManager runManager = RunManager.getInstance(project);
         for (RunnerAndConfigurationSettings runnerAndConfigurationSettings : runManager.getConfigurationSettingsList(getColtConfigurationType(runManager))) {
             if (runnerAndConfigurationSettings.getName().equals(runConfigurationName)) {
@@ -60,7 +107,7 @@ public abstract class JsRunWithColt extends AnAction {
         return null;
     }
 
-    protected boolean runExistsConfiguration (Project project, String runConfigurationName) {
+    public static boolean runExistsConfiguration (Project project, String runConfigurationName) {
         RunnerAndConfigurationSettings runnerAndConfigurationSettings = findConfiguration(project, runConfigurationName);
         if(runnerAndConfigurationSettings != null && runnerAndConfigurationSettings.getConfiguration() instanceof JsColtRunConfiguration) {
             ProgramRunnerUtil.executeConfiguration(project, runnerAndConfigurationSettings, DefaultRunExecutor.getRunExecutorInstance());
@@ -116,6 +163,14 @@ public abstract class JsRunWithColt extends AnAction {
         // check if such configuration already exists
         RunnerAndConfigurationSettings runnerAndConfigurationSettings = findConfiguration(project, runConfigurationName);
         if(runnerAndConfigurationSettings != null && runnerAndConfigurationSettings.getConfiguration() instanceof JsColtRunConfiguration) {
+            // check if projectFile exists
+            JsColtRunConfiguration configuration = (JsColtRunConfiguration) runnerAndConfigurationSettings.getConfiguration();
+            String coltProjectPath = configuration.getColtProjectPath();
+            if(!new File(coltProjectPath).exists()) {
+                configuration.setColtProjectPath(projectPath);
+            }
+            // end check
+
             ProgramRunnerUtil.executeConfiguration(project, runnerAndConfigurationSettings, DefaultRunExecutor.getRunExecutorInstance());
         } else {
             // create configuration and run
@@ -128,9 +183,7 @@ public abstract class JsRunWithColt extends AnAction {
         }
     }
 
-
-
-    protected JsColtConfigurationType getColtConfigurationType(RunManager runManager) {
+    protected static JsColtConfigurationType getColtConfigurationType(RunManager runManager) {
         JsColtConfigurationType coltConfigurationType = null;
         for (ConfigurationType configurationType : runManager.getConfigurationFactories()) {
             if (configurationType instanceof JsColtConfigurationType) {

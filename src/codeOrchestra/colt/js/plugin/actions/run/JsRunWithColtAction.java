@@ -31,13 +31,7 @@ public class JsRunWithColtAction extends JsRunWithColt {
 
     @Override
     public void actionPerformed(AnActionEvent actionEvent) {
-        VirtualFile[] virtualFileArray = (VirtualFile[]) actionEvent.getDataContext().getData("virtualFileArray");
-
-        if (virtualFileArray == null || virtualFileArray[0] == null) {
-            throw new IllegalStateException(); // should not happen
-        }
-
-        String path = virtualFileArray[0].getPath().toLowerCase();
+        String path = mainFilePath;
         Project project = actionEvent.getProject();
         if(project == null) {
             return;
@@ -58,8 +52,8 @@ public class JsRunWithColtAction extends JsRunWithColt {
                 Notifications.Bus.notify(new Notification("colt.notification", "COLT", "Main document for 'Run With COLT' can be only HTML file.", NotificationType.ERROR));
             }
         } else {
-            String mainDocumentPath = virtualFileArray[0].getPath();
-            String mainDocumentName = virtualFileArray[0].getName();
+            String mainDocumentPath = mainFilePath;
+            String mainDocumentName = new File(mainFilePath).getName();
 
             String content = FileUtils.read(new File(mainDocumentPath));
             Matcher m = META_PATTERN.matcher(content);
