@@ -107,7 +107,7 @@ public class GotoDeclarationAction extends AbstractColtRemoteAction<ColtJsRemote
                         caretModel.moveToOffset(declarationPosition.position, true);
 
                         //Scroll to the caret
-                        ScrollingModel scrollingModel = editor.getScrollingModel();
+                        ScrollingModel scrollingModel = selectedEditor.getScrollingModel();
                         scrollingModel.scrollToCaret(ScrollType.CENTER);
                     }
                 }
