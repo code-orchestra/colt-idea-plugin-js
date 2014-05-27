@@ -59,6 +59,9 @@ public class ContextCompletionContributor extends CompletionContributor {
                 String filePath = virtualFile.getPath();
                 int offset = parameters.getOffset();
                 String currentState = parameters.getOriginalFile().getText();
+                while (offset > 0 && currentState.charAt(offset) != '.') {
+                    offset -= 1;
+                }
 
                 try {
                     synchronized (ColtRemoteServiceProvider.MONITOR) {
