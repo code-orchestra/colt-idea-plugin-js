@@ -77,29 +77,32 @@ public class ContextCompletionContributor extends CompletionContributor {
                                 result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
                             }
                         } else {
-                            Editor editor = ((EditorWindow) parameters.getEditor()).getDelegate();
-                            filePath = ((VirtualFileWindowImpl) virtualFile).getDelegate().getPath();
-                            offset = editor.getCaretModel().getOffset();
-                            currentState = editor.getDocument().getText();
+                            Editor baseEditor = parameters.getEditor();
+                            if (baseEditor instanceof EditorWindow) {
+                                Editor editor = ((EditorWindow) baseEditor).getDelegate();
+                                filePath = ((VirtualFileWindowImpl) virtualFile).getDelegate().getPath();
+                                offset = editor.getCaretModel().getOffset();
+                                currentState = editor.getDocument().getText();
 
-                            String enclosingTagId = remoteService.getEnclosingTagId(
-                                    ColtSettings.getInstance().getSecurityToken(),
-                                    filePath,
-                                    offset,
-                                    currentState
-                            );
+                                String enclosingTagId = remoteService.getEnclosingTagId(
+                                        ColtSettings.getInstance().getSecurityToken(),
+                                        filePath,
+                                        offset,
+                                        currentState
+                                );
 
-                            int TagId = Integer.parseInt(enclosingTagId);
-                            String[] propsList = remoteService.angularExpressionCompletionAfterDot(
-                                    ColtSettings.getInstance().getSecurityToken(),
-                                    TagId,
-                                    parameters.getOffset(),
-                                    parameters.getOriginalFile().getText()
-                            );
-                            for (String node : propsList) {
-                                result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
+                                int TagId = Integer.parseInt(enclosingTagId);
+                                String[] propsList = remoteService.angularExpressionCompletionAfterDot(
+                                        ColtSettings.getInstance().getSecurityToken(),
+                                        TagId,
+                                        parameters.getOffset(),
+                                        parameters.getOriginalFile().getText()
+                                );
+                                for (String node : propsList) {
+                                    result.addElement(LookupElementBuilder.create(node).withIcon(Icons.COLT_ICON_16));
+                                }
+                                extendWasCalled = true;
                             }
-                            extendWasCalled = true;
                         }
                     }
 

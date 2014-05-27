@@ -36,7 +36,7 @@ public final class ProjectStorageHelper {
             Element storageElement = (Element) storageElements.item(i);
 
             String path = storageElement.getAttribute("path");
-            if (!coltProjectPath.equals(path)) {
+            if (!coltProjectPath.equals(path) && !coltProjectPath.replace("/", "\\").equals(path)) {
                 continue;
             }
 
