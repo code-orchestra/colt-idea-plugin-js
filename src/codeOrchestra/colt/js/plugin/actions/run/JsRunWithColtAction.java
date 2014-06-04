@@ -66,7 +66,11 @@ public class JsRunWithColtAction extends JsRunWithColt {
                     if("colt-main-document".equals(name)) {
                         Matcher matcher1 = META_CONTENT.matcher(group);
                         if(matcher1.find()) {
-                            mainDocumentPath = File.separator + matcher1.group(1);
+                            if(matcher1.group(1).contains("http://")) {
+                                mainDocumentPath = matcher1.group(1);
+                            } else {
+                                mainDocumentPath = File.separator + matcher1.group(1);
+                            }
                         }
                     }
                 }
